@@ -10,7 +10,6 @@ import {
 } from '@headlessui/react'
 import {
   Bars3Icon,
-  MagnifyingGlassIcon,
   ShoppingBagIcon,
   XMarkIcon,
 } from '@heroicons/react/24/outline'
@@ -18,6 +17,7 @@ import {
 const navigation = {
   pages: [
     { name: 'About', href: '#' },
+    { name: 'Application', href: '#' },
     { name: 'Documentation', href: '#' },
     { name: 'Support', href: '#' },
     { name: 'Contact', href: '#' },
@@ -39,9 +39,8 @@ export default function Header({ hideUntilScroll = false }: HeaderProps) {
     }
 
     const handleScroll = () => {
-      // Heroセクション（100vh）を過ぎたら表示
-      // 少し手前（-100px）で表示開始するとスムーズ
-      const threshold = window.innerHeight - 100
+      // スクロール開始と同時に表示
+      const threshold = 0 
       const currentScrollY = window.scrollY
       setIsVisible(currentScrollY > threshold)
     }
@@ -60,10 +59,7 @@ export default function Header({ hideUntilScroll = false }: HeaderProps) {
         isVisible ? 'translate-y-0' : '-translate-y-full'
       }`}
     >
-      {/* 配送無料バナー */}
-      <p className="flex h-10 items-center justify-center bg-racing-green px-4 text-sm font-medium text-ivory sm:px-6 lg:px-8 font-jetbrains tracking-wide">
-        50,000円以上のご注文で送料無料
-      </p>
+
 
       <nav aria-label="Top" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center">
@@ -80,7 +76,7 @@ export default function Header({ hideUntilScroll = false }: HeaderProps) {
           {/* ロゴ */}
           <div className="ml-4 flex lg:ml-0">
             <Link href="/">
-              <span className="font-playfair text-2xl font-bold tracking-tight text-deep-black cursor-pointer">
+              <span className="font-playfair text-2xl font-bold tracking-tight text-racing-green cursor-pointer">
                 TiDia
               </span>
             </Link>
@@ -113,13 +109,7 @@ export default function Header({ hideUntilScroll = false }: HeaderProps) {
               </Link>
             </div>
 
-            {/* 検索 */}
-            <div className="flex lg:ml-6">
-              <Link href="#" className="p-2 text-deep-black/60 hover:text-deep-black">
-                <span className="sr-only">Search</span>
-                <MagnifyingGlassIcon aria-hidden="true" className="size-6" />
-              </Link>
-            </div>
+
 
             {/* カート */}
             <div className="ml-4 flow-root lg:ml-6">

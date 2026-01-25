@@ -16,19 +16,14 @@
   --color-brass: var(--aged-brass);
   --color-deep-black: var(--deep-black);
 
-  /* フォント定義 */
-  --font-playfair: "Playfair Display", serif;
-  --font-jetbrains: "JetBrains Mono", monospace;
-  --font-cormorant: "Cormorant Garamond", serif;
-  --font-noto: "Noto Sans JP", sans-serif;
+  /* フォント定義（欧文 / 和文ペアリング） */
+  --font-playfair: var(--font-playfair), var(--font-shippori), serif;
+  --font-jetbrains: var(--font-jetbrains), var(--font-biz-ud), monospace;
+  --font-cormorant: var(--font-cormorant), var(--font-zen-old), serif;
+  --font-noto: var(--font-noto), sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+
 
 body {
   background: var(--background);

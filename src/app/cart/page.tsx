@@ -10,45 +10,45 @@ import Footer from '@/components/Footer'
 const products = [
   {
     id: 1,
-    name: 'Application UI Icon Pack',
+    name: 'アプリケーションUIアイコンパック',
     href: '#',
     price: '¥32,000',
-    color: 'Outline & Solid',
+    color: 'アウトライン & ソリッド',
     inStock: true,
     size: 'v1.0',
     imageSrc: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-05-product-01.jpg',
-    imageAlt: 'Icon pack preview',
+    imageAlt: 'アイコンパックのプレビュー',
   },
   {
     id: 2,
-    name: 'Dashboard Template',
+    name: 'ダッシュボードテンプレート',
     href: '#',
     price: '¥48,000',
-    color: 'Dark Mode',
+    color: 'ダークモード',
     inStock: false,
     leadTime: '2–3週間',
     size: 'React',
     imageSrc: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/shopping-cart-page-01-product-02.jpg',
-    imageAlt: 'Dashboard template preview',
+    imageAlt: 'ダッシュボードテンプレートのプレビュー',
   },
 ]
 
 const relatedProducts = [
   {
     id: 1,
-    name: 'SaaS Marketing Kit',
+    name: 'SaaSマーケティングキット',
     href: '#',
     imageSrc: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/shopping-cart-page-01-related-product-01.jpg',
-    imageAlt: 'SaaS Marketing Kit',
+    imageAlt: 'SaaSマーケティングキット',
     price: '¥28,000',
     color: 'Figma',
   },
   {
     id: 2,
-    name: 'E-commerce UI Bundle',
+    name: 'EコマースUIバンドル',
     href: '#',
     imageSrc: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/shopping-cart-page-01-related-product-02.jpg',
-    imageAlt: 'E-commerce UI Bundle',
+    imageAlt: 'EコマースUIバンドル',
     price: '¥56,000',
     color: 'React & Vue',
   },
@@ -173,7 +173,7 @@ export default function CartPage() {
                 <dd className="font-medium text-deep-black">¥8,100</dd>
               </div>
               <div className="flex items-center justify-between border-t border-brass/20 pt-4">
-                <dt className="text-base font-medium text-deep-black font-playfair">Total</dt>
+                <dt className="text-base font-medium text-deep-black font-playfair">合計</dt>
                 <dd className="text-base font-medium text-racing-green">¥89,100</dd>
               </div>
             </dl>
@@ -183,7 +183,7 @@ export default function CartPage() {
                 type="submit"
                 className="w-full rounded-md border border-transparent bg-racing-green px-4 py-3 text-base font-bold text-ivory shadow-sm hover:bg-deep-black transition-all focus:ring-2 focus:ring-racing-green focus:ring-offset-2 focus:ring-offset-ivory focus:outline-hidden font-jetbrains uppercase tracking-widest"
               >
-                Checkout
+                注文手続きへ
               </button>
             </div>
           </section>
