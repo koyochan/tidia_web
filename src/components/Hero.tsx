@@ -107,7 +107,7 @@ export default function Hero() {
                   <div 
                     className="tile-face tile-front absolute inset-0 backface-hidden rounded-lg"
                     style={{ 
-                      backgroundImage: 'url("/hero/front.jpg")',
+                      backgroundImage: 'url("/hero/front.png")',
                       backgroundSize: '600% 600%',
                       backgroundPosition: bgPos 
                     }}
@@ -115,7 +115,7 @@ export default function Hero() {
                   <div 
                     className="tile-face tile-back absolute inset-0 backface-hidden rounded-lg rotate-x-180"
                     style={{ 
-                      backgroundImage: 'url("/hero/back.jpg")',
+                      backgroundImage: 'url("/hero/back.png")',
                       backgroundSize: '600% 600%',
                       backgroundPosition: bgPos 
                     }}

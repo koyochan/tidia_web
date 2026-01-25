@@ -1,15 +1,26 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --royal-ivory: #FDFCF8;
+  --british-racing-green: #004225;
+  --aged-brass: #B59A5A;
+  --deep-black: #1A1A1A;
+  
+  --background: var(--royal-ivory);
+  --foreground: var(--deep-black);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-ivory: var(--royal-ivory);
+  --color-racing-green: var(--british-racing-green);
+  --color-brass: var(--aged-brass);
+  --color-deep-black: var(--deep-black);
+
+  /* フォント定義 */
+  --font-playfair: "Playfair Display", serif;
+  --font-jetbrains: "JetBrains Mono", monospace;
+  --font-cormorant: "Cormorant Garamond", serif;
+  --font-noto: "Noto Sans JP", sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -22,7 +33,7 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-noto);
 }
 
 @layer utilities {
