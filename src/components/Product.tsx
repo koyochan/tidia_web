@@ -19,14 +19,15 @@ const product = {
 
 export default function Product() {
   return (
-    <section className="bg-deep-black text-ivory py-24 px-4 sm:px-6 lg:px-8 border-t border-brass/20">
+    // bg-deep-black -> bg-ivory, text-ivory -> text-deep-black に変更
+    <section className="bg-ivory text-deep-black py-24 px-4 sm:px-6 lg:px-8 border-t border-brass/20">
       <div className="mx-auto max-w-7xl">
         <div className="lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-16">
           
-          {/* 左側: 商品画像 (黒背景に映える真鍮のフレーム) */}
+          {/* 左側: 商品画像 */}
           <div className="relative group">
             <div className="absolute -inset-4 border border-brass/30 group-hover:border-brass/60 transition-colors duration-700" />
-            <div className="relative overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)]">
+            <div className="relative overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.2)]"> {/* 影を少し薄く調整 */}
               <img
                 src={product.imageSrc}
                 alt={product.imageAlt}
@@ -50,12 +51,13 @@ export default function Product() {
               </div>
             </div>
 
-            <p className="mt-8 font-cormorant text-2xl italic text-ivory/80 leading-relaxed">
+            {/* text-ivory/80 -> text-deep-black/80 に変更 */}
+            <p className="mt-8 font-cormorant text-2xl italic text-deep-black/80 leading-relaxed">
               {product.description}
             </p>
 
             <div className="mt-10">
-              <h3 className="font-playfair text-sm uppercase tracking-[0.3em] text-brass/60">
+              <h3 className="font-playfair text-sm uppercase tracking-[0.3em] text-brass/80">
                 Key Highlights
               </h3>
               <ul className="font-noto mt-6 space-y-4 text-sm">
@@ -69,7 +71,7 @@ export default function Product() {
             </div>
 
             <div className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <button className="font-jetbrains bg-racing-green py-5 text-sm font-bold uppercase tracking-widest hover:bg-white hover:text-deep-black transition-all">
+              <button className="font-jetbrains bg-racing-green py-5 text-sm font-bold uppercase tracking-widest text-ivory hover:bg-deep-black hover:text-ivory transition-all">
                 Add to Cart
               </button>
               <button className="font-jetbrains border border-brass text-brass py-5 text-sm font-bold uppercase tracking-widest hover:bg-brass hover:text-deep-black transition-all">

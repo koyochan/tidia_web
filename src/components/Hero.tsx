@@ -1,12 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import gsap from "gsap"; // 型定義をインストールすればエラーは消えます
+import gsap from "gsap";
 
 const ROWS = 6;
 const COLS = 6;
 const BLOCK_SIZE = 50;
-const COOLDOWN = 1000;
 
 export default function Hero() {
   const blocksRef = useRef<HTMLDivElement>(null);
@@ -38,7 +37,8 @@ export default function Hero() {
 
       const block = blockContainer.children[index] as HTMLElement;
       if (block) {
-        block.classList.add("highlight");
+        // 背景が黒なのでハイライトは白に戻す
+        block.classList.add("highlight"); 
         setTimeout(() => block.classList.remove("highlight"), 250);
       }
     };
@@ -78,23 +78,25 @@ export default function Hero() {
   };
 
   return (
-    <div className="relative w-full h-screen overflow-hidden bg-black font-sans">
+    // 背景を #1A1A1A に設定
+    <div className="relative w-full h-screen overflow-hidden bg-[#1A1A1A] font-sans">
       <nav className="absolute top-0 left-0 w-full flex justify-between items-center p-8 z-10 pointer-events-none">
-        <span className="text-white text-2xl font-bold pointer-events-auto">Codegrid</span>
+        {/* 背景が黒なので文字はアイボリーに */}
+        <span className="text-ivory text-2xl font-bold pointer-events-auto font-playfair invisible lg:visible">TiDia</span>
         <button 
           onClick={handleFlipAll}
-          className="pointer-events-auto border-none outline-none text-white bg-black rounded px-4 py-2 uppercase text-xl hover:bg-zinc-800 transition-colors"
+          // ボタンはアイボリー背景に黒文字でコントラストを確保
+          className="pointer-events-auto border-none outline-none text-deep-black bg-ivory rounded px-4 py-2 uppercase text-xl hover:bg-white transition-colors font-jetbrains"
         >
           Flip Tiles
         </button>
       </nav>
 
-      <section className="board w-screen h-screen p-1 flex flex-col gap-1 perspective-1000 bg-black relative z-[1]">
+      {/* boardの背景も #1A1A1A に設定 */}
+      <section className="board w-screen h-screen p-1 flex flex-col gap-1 perspective-1000 bg-[#1A1A1A] relative z-[1]">
         {[...Array(ROWS)].map((_, rowIndex) => (
           <div key={rowIndex} className="row flex flex-1 gap-1">
             {[...Array(COLS)].map((_, colIndex) => {
-              const index = rowIndex * COLS + colIndex;
-              // ESLint prefer-const 対策: 再代入しないため const を使用
               const tiltY = [ -40, -20, -10, 10, 20, 40 ][colIndex % 6];
               const bgPos = `${colIndex * 20}% ${rowIndex * 20}%`;
 
@@ -130,6 +132,19 @@ export default function Hero() {
       <div className="blocks-container fixed inset-0 pointer-events-none z-[2]">
         <div ref={blocksRef} id="blocks" className="flex flex-wrap w-[105vw] h-full align-content-start" />
       </div>
+      
+      {/* ハイライトを白に戻す */}
+      <style jsx global>{`
+        .block {
+          width: 50px;
+          height: 50px;
+          border: 0.5px solid transparent;
+          transition: border-color 0.3s ease;
+        }
+        .highlight {
+          border-color: #fff !important;
+        }
+      `}</style>
     </div>
   );
 }
