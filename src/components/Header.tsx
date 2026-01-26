@@ -17,27 +17,21 @@ import {
   GlobeAltIcon,
 } from '@heroicons/react/24/outline'
 
-const navigation = {
-  pages: [
-    { name: 'About', href: '#' },
-    { name: 'Application', href: '/application' },
-    { name: 'Contact', href: '/contact' },
-  ],
-}
-
 interface HeaderProps {
   hideUntilScroll?: boolean
 }
 
 export default function Header({ hideUntilScroll = false }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [isVisible, setIsVisible] = useState(!hideUntilScroll)
+  const [isScrolledVisible, setIsScrolledVisible] = useState(false)
   const { itemCount } = useCart()
   const { language, setLanguage, t } = useLanguage()
 
+  // ナビゲーションに 'Products' を追加
   const navigation = {
     pages: [
       { name: t('nav_about'), href: '/about' },
+      { name: 'Products', href: '/products' }, // トップページの商品セクションへアンカーリンク
       { name: t('nav_application'), href: '/application' },
       { name: t('nav_contact'), href: '/contact' },
     ],
@@ -45,22 +39,29 @@ export default function Header({ hideUntilScroll = false }: HeaderProps) {
 
   useEffect(() => {
     if (!hideUntilScroll) {
-      setIsVisible(true)
       return
     }
 
     const handleScroll = () => {
-      // スクロール開始と同時に表示
       const threshold = 0 
       const currentScrollY = window.scrollY
-      setIsVisible(currentScrollY > threshold)
+      const shouldBeVisible = currentScrollY > threshold
+      
+      // 値が変わった時だけStateを更新
+      setIsScrolledVisible(prev => {
+        if (prev !== shouldBeVisible) return shouldBeVisible
+        return prev
+      })
     }
 
     window.addEventListener('scroll', handleScroll, { passive: true })
-    handleScroll() // Initial check
+    handleScroll()
 
     return () => window.removeEventListener('scroll', handleScroll)
   }, [hideUntilScroll])
+
+  // 表示判定ロジック
+  const isVisible = !hideUntilScroll || isScrolledVisible
 
   return (
     <header 
@@ -70,8 +71,6 @@ export default function Header({ hideUntilScroll = false }: HeaderProps) {
         isVisible ? 'translate-y-0' : '-translate-y-full'
       }`}
     >
-
-
       <nav aria-label="Top" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center">
           {/* モバイルメニューボタン */}
@@ -110,8 +109,6 @@ export default function Header({ hideUntilScroll = false }: HeaderProps) {
 
           {/* 右側アイコンエリア */}
           <div className="ml-auto flex items-center">
-
-            {/* 言語切り替え */}
             <button
               onClick={() => setLanguage(language === 'ja' ? 'en' : 'ja')}
               className="flex items-center gap-1 text-xs font-bold font-jetbrains text-deep-black/60 hover:text-racing-green transition-colors px-3 py-1 border border-brass/20 rounded-full"
@@ -120,7 +117,6 @@ export default function Header({ hideUntilScroll = false }: HeaderProps) {
               <span>{language.toUpperCase()}</span>
             </button>
 
-            {/* カート */}
             <div className="ml-4 flow-root lg:ml-6">
               <Link href="/cart" className="group -m-2 flex items-center p-2">
                 <ShoppingBagIcon
@@ -168,8 +164,6 @@ export default function Header({ hideUntilScroll = false }: HeaderProps) {
                 </div>
               ))}
             </div>
-
-
           </DialogPanel>
         </div>
       </Dialog>
