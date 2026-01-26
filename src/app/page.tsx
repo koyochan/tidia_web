@@ -1,3 +1,6 @@
+'use client'
+
+import { useEffect, useState } from "react";
 import Hero from "@/components/Hero";
 import Product from "@/components/Product";
 import BrandStory from "@/components/BrandStory";
@@ -5,8 +8,19 @@ import ProductDetails from "@/components/ProductDetails";
 import FocusSection from "@/components/FocusSection";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { fetchProducts, ParsedProduct } from "@/lib/firestore";
 
 export default function Home() {
+  const [featuredProduct, setFeaturedProduct] = useState<ParsedProduct | null>(null);
+
+  useEffect(() => {
+    fetchProducts().then(products => {
+      if (products.length > 0) {
+        setFeaturedProduct(products[0]);
+      }
+    });
+  }, []);
+
   return (
     // bg-black -> bg-ivory に変更
     <div className="bg-ivory min-h-screen flex flex-col font-noto">
@@ -16,7 +30,7 @@ export default function Home() {
         <Hero />
         <Product />
         <BrandStory />
-        <ProductDetails />
+        <ProductDetails product={featuredProduct || undefined} />
         <FocusSection />
       </main>
 

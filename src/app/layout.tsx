@@ -8,6 +8,12 @@ import {
   BIZ_UDGothic,
   Zen_Old_Mincho
 } from "next/font/google";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import CursorParticles from "@/components/CursorParticles";
+import { CartProvider } from "@/context/CartContext";
+import { NotificationProvider } from "@/context/NotificationContext";
+import { LanguageProvider } from "@/context/LanguageContext";
 import "./globals.css";
 
 const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfair" });
@@ -19,15 +25,22 @@ const zenOldMincho = Zen_Old_Mincho({ weight: ["400", "700"], subsets: ["latin"]
 const noto = Noto_Sans_JP({ subsets: ["latin"], variable: "--font-noto" });
 
 export const metadata: Metadata = {
-  title: "Codegrid - Luxury UI Kit",
-  description: "High-end design resources for developers",
+  title: "TiDia",
+  description: "Analog, Re-implemented. High-end digital artifacts for the modern creative.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ja">
       <body className={`${playfair.variable} ${shippori.variable} ${jetbrains.variable} ${bizUdGothic.variable} ${cormorant.variable} ${zenOldMincho.variable} ${noto.variable} antialiased`}>
-        {children}
+        <LanguageProvider>
+          <NotificationProvider>
+            <CartProvider>
+              <CursorParticles />
+              {children}
+            </CartProvider>
+          </NotificationProvider>
+        </LanguageProvider>
       </body>
     </html>
   );

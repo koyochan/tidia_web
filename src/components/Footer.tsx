@@ -1,21 +1,31 @@
+'use client'
+
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
+import { fetchProducts, ParsedProduct } from '@/lib/firestore'
 
 const footerNavigation = {
-  products: [
-    { name: 'TiDia Flip', href: '/products/tidia-flip' },
-  ],
   company: [
-    { name: 'TiDiaについて', href: '#' },
+    { name: 'TiDiaについて', href: '/about' },
     { name: 'ライセンス', href: '#' },
     { name: '利用規約', href: '#' },
   ],
   customerService: [
-    { name: 'お問い合わせ', href: '#' },
-    { name: 'よくある質問', href: '#' },
+    { name: 'お問い合わせ', href: '/contact' },
   ],
 }
 
 export default function Footer() {
+  const [products, setProducts] = useState<ParsedProduct[]>([])
+
+  useEffect(() => {
+    fetchProducts().then(data => {
+      setProducts(data)
+    }).catch(err => {
+      console.error("Failed to fetch products for footer", err)
+    })
+  }, [])
+
   return (
     <footer aria-labelledby="footer-heading" className="bg-ivory border-t border-brass/20">
       <h2 id="footer-heading" className="sr-only">
@@ -27,7 +37,7 @@ export default function Footer() {
             
             {/* ブランドロゴエリア */}
             <div className="md:w-1/3">
-               <span className="font-playfair text-3xl font-bold tracking-tight text-deep-black">
+               <span className="font-playfair text-3xl font-bold tracking-tight text-racing-green">
                   TiDia
                 </span>
                 <p className="mt-4 text-sm text-deep-black/60 font-noto">
@@ -38,11 +48,11 @@ export default function Footer() {
             {/* サイトマップエリア */}
             <div className="md:w-2/3 grid grid-cols-2 gap-8 sm:grid-cols-3">
               <div>
-                <h3 className="text-sm font-medium text-deep-black font-jetbrains">プロダクト</h3>
+                <h3 className="text-sm font-medium text-deep-black font-jetbrains">商品</h3>
                 <ul role="list" className="mt-6 space-y-6">
-                  {footerNavigation.products.map((item) => (
-                    <li key={item.name} className="text-sm">
-                      <Link href={item.href} className="text-deep-black/60 hover:text-racing-green font-noto transition-colors">
+                  {products.map((item) => (
+                    <li key={item.id} className="text-sm">
+                      <Link href={`/products/${item.id}`} className="text-deep-black/60 hover:text-racing-green font-noto transition-colors">
                         {item.name}
                       </Link>
                     </li>

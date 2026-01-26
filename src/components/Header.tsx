@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { useCart } from '@/context/CartContext'
+import { useLanguage } from '@/context/LanguageContext'
 import {
   Dialog,
   DialogBackdrop,
@@ -12,15 +14,14 @@ import {
   Bars3Icon,
   ShoppingBagIcon,
   XMarkIcon,
+  GlobeAltIcon,
 } from '@heroicons/react/24/outline'
 
 const navigation = {
   pages: [
     { name: 'About', href: '#' },
-    { name: 'Application', href: '#' },
-    { name: 'Documentation', href: '#' },
-    { name: 'Support', href: '#' },
-    { name: 'Contact', href: '#' },
+    { name: 'Application', href: '/application' },
+    { name: 'Contact', href: '/contact' },
   ],
 }
 
@@ -31,6 +32,16 @@ interface HeaderProps {
 export default function Header({ hideUntilScroll = false }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [isVisible, setIsVisible] = useState(!hideUntilScroll)
+  const { itemCount } = useCart()
+  const { language, setLanguage, t } = useLanguage()
+
+  const navigation = {
+    pages: [
+      { name: t('nav_about'), href: '/about' },
+      { name: t('nav_application'), href: '/application' },
+      { name: t('nav_contact'), href: '/contact' },
+    ],
+  }
 
   useEffect(() => {
     if (!hideUntilScroll) {
@@ -99,17 +110,15 @@ export default function Header({ hideUntilScroll = false }: HeaderProps) {
 
           {/* 右側アイコンエリア */}
           <div className="ml-auto flex items-center">
-            <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-              <Link href="#" className="text-sm font-medium text-deep-black hover:text-brass font-jetbrains">
-                Sign in
-              </Link>
-              <span aria-hidden="true" className="h-6 w-px bg-brass/30" />
-              <Link href="#" className="text-sm font-medium text-deep-black hover:text-brass font-jetbrains">
-                Create account
-              </Link>
-            </div>
 
-
+            {/* 言語切り替え */}
+            <button
+              onClick={() => setLanguage(language === 'ja' ? 'en' : 'ja')}
+              className="flex items-center gap-1 text-xs font-bold font-jetbrains text-deep-black/60 hover:text-racing-green transition-colors px-3 py-1 border border-brass/20 rounded-full"
+            >
+              <GlobeAltIcon className="size-4" />
+              <span>{language.toUpperCase()}</span>
+            </button>
 
             {/* カート */}
             <div className="ml-4 flow-root lg:ml-6">
@@ -119,9 +128,9 @@ export default function Header({ hideUntilScroll = false }: HeaderProps) {
                   className="size-6 shrink-0 text-deep-black/60 group-hover:text-brass transition-colors"
                 />
                 <span className="ml-2 text-sm font-medium text-deep-black group-hover:text-brass font-jetbrains">
-                  2
+                  {itemCount}
                 </span>
-                <span className="sr-only">items in cart, view bag</span>
+                <span className="sr-only">{itemCount} {t('cart_items')}</span>
               </Link>
             </div>
           </div>
@@ -160,18 +169,7 @@ export default function Header({ hideUntilScroll = false }: HeaderProps) {
               ))}
             </div>
 
-            <div className="space-y-6 border-t border-brass/20 px-4 py-6">
-              <div className="flow-root">
-                <Link href="#" className="-m-2 block p-2 font-medium text-deep-black font-jetbrains">
-                  Sign in
-                </Link>
-              </div>
-              <div className="flow-root">
-                <Link href="#" className="-m-2 block p-2 font-medium text-deep-black font-jetbrains">
-                  Create account
-                </Link>
-              </div>
-            </div>
+
           </DialogPanel>
         </div>
       </Dialog>

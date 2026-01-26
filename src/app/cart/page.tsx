@@ -1,60 +1,62 @@
 'use client'
 
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
 import { ChevronDownIcon } from '@heroicons/react/16/solid'
-import { CheckIcon, ClockIcon, QuestionMarkCircleIcon, XMarkIcon as XMarkIconMini } from '@heroicons/react/20/solid'
+import { CheckIcon, XMarkIcon as XMarkIconMini, InformationCircleIcon } from '@heroicons/react/20/solid'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
-
-// サンプルデータ（商品情報）
-const products = [
-  {
-    id: 1,
-    name: 'アプリケーションUIアイコンパック',
-    href: '#',
-    price: '¥32,000',
-    color: 'アウトライン & ソリッド',
-    inStock: true,
-    size: 'v1.0',
-    imageSrc: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-05-product-01.jpg',
-    imageAlt: 'アイコンパックのプレビュー',
-  },
-  {
-    id: 2,
-    name: 'ダッシュボードテンプレート',
-    href: '#',
-    price: '¥48,000',
-    color: 'ダークモード',
-    inStock: false,
-    leadTime: '2–3週間',
-    size: 'React',
-    imageSrc: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/shopping-cart-page-01-product-02.jpg',
-    imageAlt: 'ダッシュボードテンプレートのプレビュー',
-  },
-]
-
-const relatedProducts = [
-  {
-    id: 1,
-    name: 'SaaSマーケティングキット',
-    href: '#',
-    imageSrc: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/shopping-cart-page-01-related-product-01.jpg',
-    imageAlt: 'SaaSマーケティングキット',
-    price: '¥28,000',
-    color: 'Figma',
-  },
-  {
-    id: 2,
-    name: 'EコマースUIバンドル',
-    href: '#',
-    imageSrc: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/shopping-cart-page-01-related-product-02.jpg',
-    imageAlt: 'EコマースUIバンドル',
-    price: '¥56,000',
-    color: 'React & Vue',
-  },
-]
+import { useCart } from '@/context/CartContext'
+import { fetchProducts, ParsedProduct } from '@/lib/firestore'
+import { useNotification } from '@/context/NotificationContext'
 
 export default function CartPage() {
+  const { cart, removeItem, updateQuantity, subtotal } = useCart()
+  const { showNotification } = useNotification()
+  const [relatedProducts, setRelatedProducts] = useState<ParsedProduct[]>([])
+  
+  useEffect(() => {
+    fetchProducts().then(allProducts => {
+      const cartIds = cart.map(item => item.id)
+      const related = allProducts.filter(p => !cartIds.includes(p.id)).slice(0, 4)
+      setRelatedProducts(related)
+    })
+  }, [cart])
+
+  const handleCheckout = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (cart.length === 0) return
+
+    try {
+      const response = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items: cart }),
+      })
+
+      const data = await response.json()
+      if (data.url) {
+        window.location.href = data.url
+      } else {
+        showNotification(
+          'エラー',
+          '決済画面への移動に失敗しました: ' + (data.error || '不明なエラー')
+        )
+      }
+    } catch (err) {
+      console.error(err)
+      showNotification(
+        '通信エラー',
+        '通信エラーが発生しました。インターネット接続を確認してください。'
+      )
+    }
+  }
+  
+  // 計算用（送料はここでは計算しない）
+  const tax = Math.round(subtotal * 0.1)
+  // 合計は小計+税のみ（送料はStripe側で加算）
+  const total = subtotal + tax
+
   return (
     <div className="bg-ivory text-deep-black font-noto min-h-screen flex flex-col">
       <Header />
@@ -69,12 +71,12 @@ export default function CartPage() {
             </h2>
 
             <ul role="list" className="divide-y divide-brass/20 border-t border-b border-brass/20">
-              {products.map((product, productIdx) => (
-                <li key={product.id} className="flex py-6 sm:py-10">
+              {cart.map((item) => (
+                <li key={`${item.id}-${item.color}`} className="flex py-6 sm:py-10">
                   <div className="shrink-0 border border-brass/20 rounded-md overflow-hidden">
                     <img
-                      alt={product.imageAlt}
-                      src={product.imageSrc}
+                      alt={item.imageAlt}
+                      src={item.imageSrc}
                       className="size-24 object-cover sm:size-48"
                     />
                   </div>
@@ -84,29 +86,30 @@ export default function CartPage() {
                       <div>
                         <div className="flex justify-between">
                           <h3 className="text-sm">
-                            <Link href={product.href} className="font-bold text-deep-black hover:text-racing-green font-playfair text-lg">
-                              {product.name}
-                            </Link>
+                            <span className="font-bold text-deep-black font-playfair text-lg">
+                              {item.name}
+                            </span>
                           </h3>
                         </div>
                         <div className="mt-1 flex text-sm text-deep-black/70 font-cormorant italic text-lg">
-                          <p>{product.color}</p>
-                          {product.size ? (
-                            <p className="ml-4 border-l border-brass/30 pl-4">{product.size}</p>
+                          <p>{item.color}</p>
+                          {item.material ? (
+                            <p className="ml-4 border-l border-brass/30 pl-4">{item.material}</p>
                           ) : null}
                         </div>
-                        <p className="mt-1 text-sm font-medium text-brass font-jetbrains">{product.price}</p>
+                        <p className="mt-1 text-sm font-medium text-brass font-jetbrains">{item.priceString}</p>
                       </div>
 
                       <div className="mt-4 sm:mt-0 sm:pr-9">
                         <div className="inline-grid w-full max-w-16 grid-cols-1">
                           <select
-                            id={`quantity-${productIdx}`}
-                            name={`quantity-${productIdx}`}
-                            aria-label={`数量, ${product.name}`}
+                            id={`quantity-${item.id}`}
+                            name={`quantity-${item.id}`}
+                            value={item.quantity}
+                            onChange={(e) => updateQuantity(item.id, parseInt(e.target.value), item.color, item.material)}
                             className="col-start-1 row-start-1 appearance-none rounded-md bg-ivory py-1.5 pr-8 pl-3 text-base text-deep-black outline-1 -outline-offset-1 outline-brass/30 focus:outline-2 focus:-outline-offset-2 focus:outline-racing-green sm:text-sm/6 font-jetbrains"
                           >
-                            {[1, 2, 3, 4, 5].map(num => (
+                            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => (
                               <option key={num} value={num}>{num}</option>
                             ))}
                           </select>
@@ -117,7 +120,11 @@ export default function CartPage() {
                         </div>
 
                         <div className="absolute top-0 right-0">
-                          <button type="button" className="-m-2 inline-flex p-2 text-deep-black/40 hover:text-racing-green transition-colors">
+                          <button 
+                            type="button" 
+                            onClick={() => removeItem(item.id, item.color, item.material)}
+                            className="-m-2 inline-flex p-2 text-deep-black/40 hover:text-racing-green transition-colors"
+                          >
                             <span className="sr-only">削除</span>
                             <XMarkIconMini aria-hidden="true" className="size-5" />
                           </button>
@@ -126,17 +133,17 @@ export default function CartPage() {
                     </div>
 
                     <p className="mt-4 flex space-x-2 text-sm text-deep-black/70 font-noto">
-                      {product.inStock ? (
-                        <CheckIcon aria-hidden="true" className="size-5 shrink-0 text-racing-green" />
-                      ) : (
-                        <ClockIcon aria-hidden="true" className="size-5 shrink-0 text-brass" />
-                      )}
-
-                      <span>{product.inStock ? '在庫あり' : `発送目安: ${product.leadTime}`}</span>
+                      <CheckIcon aria-hidden="true" className="size-5 shrink-0 text-racing-green" />
+                      <span>在庫あり</span>
                     </p>
                   </div>
                 </li>
               ))}
+              {cart.length === 0 && (
+                <li className="py-12 text-center text-deep-black/50 font-noto">
+                  カートに商品は入っていません。
+                </li>
+              )}
             </ul>
           </section>
 
@@ -152,35 +159,44 @@ export default function CartPage() {
             <dl className="mt-6 space-y-4 font-jetbrains text-sm">
               <div className="flex items-center justify-between">
                 <dt className="text-deep-black/60 font-noto">小計</dt>
-                <dd className="font-medium text-deep-black">¥80,000</dd>
+                <dd className="font-medium text-deep-black">¥{subtotal.toLocaleString()}</dd>
               </div>
               <div className="flex items-center justify-between border-t border-brass/10 pt-4">
                 <dt className="flex items-center text-deep-black/60 font-noto">
                   <span>送料</span>
-                  <Link href="#" className="ml-2 shrink-0 text-brass hover:text-racing-green">
-                    <QuestionMarkCircleIcon aria-hidden="true" className="size-5" />
-                  </Link>
                 </dt>
-                <dd className="font-medium text-deep-black">¥1,000</dd>
+                <dd className="font-medium text-deep-black/60 text-xs">次の画面で計算</dd>
               </div>
               <div className="flex items-center justify-between border-t border-brass/10 pt-4">
                 <dt className="flex text-deep-black/60 font-noto">
                   <span>消費税</span>
-                  <Link href="#" className="ml-2 shrink-0 text-brass hover:text-racing-green">
-                    <QuestionMarkCircleIcon aria-hidden="true" className="size-5" />
-                  </Link>
                 </dt>
-                <dd className="font-medium text-deep-black">¥8,100</dd>
+                <dd className="font-medium text-deep-black">¥{tax.toLocaleString()}</dd>
               </div>
               <div className="flex items-center justify-between border-t border-brass/20 pt-4">
-                <dt className="text-base font-medium text-deep-black font-playfair">合計</dt>
-                <dd className="text-base font-medium text-racing-green">¥89,100</dd>
+                <dt className="text-base font-medium text-deep-black font-playfair">合計 <span className="text-xs font-normal text-deep-black/60 font-noto">（送料別）</span></dt>
+                <dd className="text-base font-medium text-racing-green">¥{total.toLocaleString()}</dd>
               </div>
             </dl>
 
             <div className="mt-6">
+               {/* 注釈の追加 */}
+              <div className="rounded-md bg-brass/5 p-4 mb-6">
+                <div className="flex">
+                  <div className="shrink-0">
+                    <InformationCircleIcon aria-hidden="true" className="size-5 text-brass" />
+                  </div>
+                  <div className="ml-3 flex-1 md:flex md:justify-between">
+                    <p className="text-sm text-deep-black/80 font-noto">
+                      送料は、次の決済画面でお客様の住所を入力した後に確定・加算されます。
+                    </p>
+                  </div>
+                </div>
+              </div>
+
               <button
                 type="submit"
+                onClick={handleCheckout}
                 className="w-full rounded-md border border-transparent bg-racing-green px-4 py-3 text-base font-bold text-ivory shadow-sm hover:bg-deep-black transition-all focus:ring-2 focus:ring-racing-green focus:ring-offset-2 focus:ring-offset-ivory focus:outline-hidden font-jetbrains uppercase tracking-widest"
               >
                 注文手続きへ
@@ -192,7 +208,7 @@ export default function CartPage() {
         {/* 関連商品 */}
         <section aria-labelledby="related-heading" className="mt-24 border-t border-brass/20 pt-16">
           <h2 id="related-heading" className="text-2xl font-bold text-deep-black font-playfair">
-            おすすめの商品
+            関連商品
           </h2>
 
           <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
@@ -200,22 +216,22 @@ export default function CartPage() {
               <div key={relatedProduct.id} className="group relative">
                 <div className="aspect-square w-full rounded-md overflow-hidden border border-brass/10">
                   <img
-                    alt={relatedProduct.imageAlt}
-                    src={relatedProduct.imageSrc}
+                    alt={relatedProduct.name}
+                    src={relatedProduct.images[0]}
                     className="h-full w-full object-cover group-hover:opacity-75 transition-opacity"
                   />
                 </div>
                 <div className="mt-4 flex justify-between">
                   <div>
                     <h3 className="text-sm text-deep-black font-playfair font-bold">
-                      <Link href={relatedProduct.href}>
+                      <Link href={`/products/${relatedProduct.id}`}>
                         <span aria-hidden="true" className="absolute inset-0" />
                         {relatedProduct.name}
                       </Link>
                     </h3>
-                    <p className="mt-1 text-sm text-deep-black/60 font-cormorant italic">{relatedProduct.color}</p>
+                    <p className="mt-1 text-sm text-deep-black/60 font-cormorant italic">{relatedProduct.subDescription}</p>
                   </div>
-                  <p className="text-sm font-medium text-brass font-jetbrains">{relatedProduct.price}</p>
+                  <p className="text-sm font-medium text-brass font-jetbrains">¥{(relatedProduct.price || 0).toLocaleString()}</p>
                 </div>
               </div>
             ))}
