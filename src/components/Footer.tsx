@@ -3,19 +3,10 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { fetchProducts, ParsedProduct } from '@/lib/firestore'
-
-const footerNavigation = {
-  company: [
-    { name: 'TiDiaについて', href: '/about' },
-    { name: 'ライセンス', href: '#' },
-    { name: '利用規約', href: '#' },
-  ],
-  customerService: [
-    { name: 'お問い合わせ', href: '/contact' },
-  ],
-}
+import { useLanguage } from '@/context/LanguageContext'
 
 export default function Footer() {
+  const { t } = useLanguage()
   const [products, setProducts] = useState<ParsedProduct[]>([])
 
   useEffect(() => {
@@ -29,7 +20,7 @@ export default function Footer() {
   return (
     <footer aria-labelledby="footer-heading" className="bg-ivory border-t border-brass/20">
       <h2 id="footer-heading" className="sr-only">
-        フッター
+        Footer
       </h2>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="py-20">
@@ -41,16 +32,16 @@ export default function Footer() {
                   TiDia
                 </span>
                 <p className="mt-4 text-sm text-deep-black/60 font-noto">
-                  アナログを、再実装する。
+                  {t('footer.tagline')}
                 </p>
             </div>
 
             {/* サイトマップエリア */}
             <div className="md:w-2/3 grid grid-cols-2 gap-8 sm:grid-cols-3">
               <div>
-                <h3 className="text-sm font-medium text-deep-black font-jetbrains">商品</h3>
+                <h3 className="text-sm font-medium text-deep-black font-jetbrains">{t('footer.products')}</h3>
                 <ul role="list" className="mt-6 space-y-6">
-                  {products.map((item) => (
+                  {products.slice(0, 5).map((item) => (
                     <li key={item.id} className="text-sm">
                       <Link href={`/products/${item.id}`} className="text-deep-black/60 hover:text-racing-green font-noto transition-colors">
                         {item.name}
@@ -60,27 +51,18 @@ export default function Footer() {
                 </ul>
               </div>
               <div>
-                <h3 className="text-sm font-medium text-deep-black font-jetbrains">企業情報</h3>
+                <h3 className="text-sm font-medium text-deep-black font-jetbrains">{t('footer.company')}</h3>
                 <ul role="list" className="mt-6 space-y-6">
-                  {footerNavigation.company.map((item) => (
-                    <li key={item.name} className="text-sm">
-                      <Link href={item.href} className="text-deep-black/60 hover:text-racing-green font-noto transition-colors">
-                        {item.name}
-                      </Link>
-                    </li>
-                  ))}
+                  <li className="text-sm"><Link href="/about" className="text-deep-black/60 hover:text-racing-green transition-colors">{t('footer.about_tidia')}</Link></li>
+                  <li className="text-sm"><Link href="#" className="text-deep-black/60 hover:text-racing-green transition-colors">{t('footer.license')}</Link></li>
+                  <li className="text-sm"><Link href="#" className="text-deep-black/60 hover:text-racing-green transition-colors">{t('footer.terms')}</Link></li>
                 </ul>
               </div>
               <div>
-                <h3 className="text-sm font-medium text-deep-black font-jetbrains">サポート</h3>
+                <h3 className="text-sm font-medium text-deep-black font-jetbrains">{t('footer.support')}</h3>
                 <ul role="list" className="mt-6 space-y-6">
-                  {footerNavigation.customerService.map((item) => (
-                    <li key={item.name} className="text-sm">
-                      <Link href={item.href} className="text-deep-black/60 hover:text-racing-green font-noto transition-colors">
-                        {item.name}
-                      </Link>
-                    </li>
-                  ))}
+                  <li className="text-sm"><Link href="/contact" className="text-deep-black/60 hover:text-racing-green transition-colors">{t('footer.contact')}</Link></li>
+                  <li className="text-sm"><Link href="/contact" className="text-deep-black/60 hover:text-racing-green transition-colors">{t('footer.faq')}</Link></li>
                 </ul>
               </div>
             </div>
@@ -88,7 +70,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-brass/10 py-10 text-center">
-          <p className="text-sm text-deep-black/50 font-jetbrains">&copy; 2024 TiDia Inc. 全著作権所有</p>
+          <p className="text-sm text-deep-black/50 font-jetbrains">{t('footer.rights')}</p>
         </div>
       </div>
     </footer>

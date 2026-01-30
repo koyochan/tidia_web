@@ -9,10 +9,12 @@ import Footer from '@/components/Footer'
 import { useCart } from '@/context/CartContext'
 import { fetchProducts, ParsedProduct } from '@/lib/firestore'
 import { useNotification } from '@/context/NotificationContext'
+import { useLanguage } from '@/context/LanguageContext'
 
 export default function CartPage() {
   const { cart, removeItem, updateQuantity, subtotal } = useCart()
   const { showNotification } = useNotification()
+  const { t } = useLanguage()
   const [relatedProducts, setRelatedProducts] = useState<ParsedProduct[]>([])
   
   useEffect(() => {
@@ -52,9 +54,7 @@ export default function CartPage() {
     }
   }
   
-  // 計算用（送料はここでは計算しない）
   const tax = Math.round(subtotal * 0.1)
-  // 合計は小計+税のみ（送料はStripe側で加算）
   const total = subtotal + tax
 
   return (
@@ -62,13 +62,11 @@ export default function CartPage() {
       <Header />
 
       <main className="mx-auto max-w-2xl px-4 pt-16 pb-24 sm:px-6 lg:max-w-7xl lg:px-8 flex-grow w-full">
-        <h1 className="text-3xl font-bold tracking-tight text-deep-black sm:text-4xl font-playfair">ショッピングカート</h1>
+        <h1 className="text-3xl font-bold tracking-tight text-deep-black sm:text-4xl font-playfair">{t('cart.title')}</h1>
 
         <form className="mt-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
           <section aria-labelledby="cart-heading" className="lg:col-span-7">
-            <h2 id="cart-heading" className="sr-only">
-              カート内の商品
-            </h2>
+            <h2 id="cart-heading" className="sr-only">Items</h2>
 
             <ul role="list" className="divide-y divide-brass/20 border-t border-b border-brass/20">
               {cart.map((item) => (
@@ -125,7 +123,7 @@ export default function CartPage() {
                             onClick={() => removeItem(item.id, item.color, item.material)}
                             className="-m-2 inline-flex p-2 text-deep-black/40 hover:text-racing-green transition-colors"
                           >
-                            <span className="sr-only">削除</span>
+                            <span className="sr-only">{t('cart.delete')}</span>
                             <XMarkIconMini aria-hidden="true" className="size-5" />
                           </button>
                         </div>
@@ -134,14 +132,14 @@ export default function CartPage() {
 
                     <p className="mt-4 flex space-x-2 text-sm text-deep-black/70 font-noto">
                       <CheckIcon aria-hidden="true" className="size-5 shrink-0 text-racing-green" />
-                      <span>在庫あり</span>
+                      <span>{t('cart.in_stock')}</span>
                     </p>
                   </div>
                 </li>
               ))}
               {cart.length === 0 && (
                 <li className="py-12 text-center text-deep-black/50 font-noto">
-                  カートに商品は入っていません。
+                  {t('cart.empty')}
                 </li>
               )}
             </ul>
@@ -153,34 +151,33 @@ export default function CartPage() {
             className="mt-16 rounded-lg bg-ivory border border-brass/20 px-4 py-6 sm:p-6 lg:col-span-5 lg:mt-0 lg:p-8 shadow-md"
           >
             <h2 id="summary-heading" className="text-lg font-medium text-deep-black font-playfair">
-              注文概要
+              {t('cart.summary_title')}
             </h2>
 
             <dl className="mt-6 space-y-4 font-jetbrains text-sm">
               <div className="flex items-center justify-between">
-                <dt className="text-deep-black/60 font-noto">小計</dt>
+                <dt className="text-deep-black/60 font-noto">{t('cart.subtotal')}</dt>
                 <dd className="font-medium text-deep-black">¥{subtotal.toLocaleString()}</dd>
               </div>
               <div className="flex items-center justify-between border-t border-brass/10 pt-4">
                 <dt className="flex items-center text-deep-black/60 font-noto">
-                  <span>送料</span>
+                  <span>{t('cart.shipping')}</span>
                 </dt>
-                <dd className="font-medium text-deep-black/60 text-xs">次の画面で計算</dd>
+                <dd className="font-medium text-deep-black/60 text-xs">{t('cart.shipping_calculating')}</dd>
               </div>
               <div className="flex items-center justify-between border-t border-brass/10 pt-4">
                 <dt className="flex text-deep-black/60 font-noto">
-                  <span>消費税</span>
+                  <span>{t('cart.tax')}</span>
                 </dt>
                 <dd className="font-medium text-deep-black">¥{tax.toLocaleString()}</dd>
               </div>
               <div className="flex items-center justify-between border-t border-brass/20 pt-4">
-                <dt className="text-base font-medium text-deep-black font-playfair">合計 <span className="text-xs font-normal text-deep-black/60 font-noto">（送料別）</span></dt>
+                <dt className="text-base font-medium text-deep-black font-playfair">{t('cart.total')} <span className="text-xs font-normal text-deep-black/60 font-noto">{t('cart.total_note')}</span></dt>
                 <dd className="text-base font-medium text-racing-green">¥{total.toLocaleString()}</dd>
               </div>
             </dl>
 
             <div className="mt-6">
-               {/* 注釈の追加 */}
               <div className="rounded-md bg-brass/5 p-4 mb-6">
                 <div className="flex">
                   <div className="shrink-0">
@@ -188,7 +185,7 @@ export default function CartPage() {
                   </div>
                   <div className="ml-3 flex-1 md:flex md:justify-between">
                     <p className="text-sm text-deep-black/80 font-noto">
-                      送料は、次の決済画面でお客様の住所を入力した後に確定・加算されます。
+                      {t('cart.shipping_note')}
                     </p>
                   </div>
                 </div>
@@ -199,7 +196,7 @@ export default function CartPage() {
                 onClick={handleCheckout}
                 className="w-full rounded-md border border-transparent bg-racing-green px-4 py-3 text-base font-bold text-ivory shadow-sm hover:bg-deep-black transition-all focus:ring-2 focus:ring-racing-green focus:ring-offset-2 focus:ring-offset-ivory focus:outline-hidden font-jetbrains uppercase tracking-widest"
               >
-                注文手続きへ
+                {t('cart.checkout')}
               </button>
             </div>
           </section>
@@ -208,7 +205,7 @@ export default function CartPage() {
         {/* 関連商品 */}
         <section aria-labelledby="related-heading" className="mt-24 border-t border-brass/20 pt-16">
           <h2 id="related-heading" className="text-2xl font-bold text-deep-black font-playfair">
-            関連商品
+            {t('products.trending_title')}
           </h2>
 
           <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">

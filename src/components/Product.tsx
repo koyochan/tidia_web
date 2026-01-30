@@ -26,7 +26,7 @@ export default function Product() {
     <section className="bg-ivory py-24 px-4 sm:px-6 lg:px-8 border-t border-brass/20">
       <div className="mx-auto max-w-7xl">
         <h2 className="text-3xl font-bold tracking-tight text-deep-black font-playfair mb-12 text-center">
-          {t('section_products')}
+          {t('home.section_products')}
         </h2>
 
         <div className="grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8">

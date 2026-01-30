@@ -27,17 +27,17 @@ export default function Header({ hideUntilScroll = false }: HeaderProps) {
   const { itemCount } = useCart()
   const { language, setLanguage, t } = useLanguage()
 
-  // ナビゲーションに 'Products' を追加
   const navigation = {
     pages: [
-      { name: t('nav_about'), href: '/about' },
-      { name: 'Products', href: '/products' }, // トップページの商品セクションへアンカーリンク
-      { name: t('nav_application'), href: '/application' },
-      { name: t('nav_contact'), href: '/contact' },
+      { name: t('header.about'), href: '/about' },
+      { name: t('header.products'), href: '/products' },
+      { name: t('header.application'), href: '/application' },
+      { name: t('header.contact'), href: '/contact' },
     ],
   }
 
   useEffect(() => {
+    // 常に表示する場合はスクロール監視を行わない
     if (!hideUntilScroll) {
       return
     }
@@ -47,7 +47,7 @@ export default function Header({ hideUntilScroll = false }: HeaderProps) {
       const currentScrollY = window.scrollY
       const shouldBeVisible = currentScrollY > threshold
       
-      // 値が変わった時だけStateを更新
+      // 値が変わった時だけStateを更新して不要なレンダリングを防ぐ
       setIsScrolledVisible(prev => {
         if (prev !== shouldBeVisible) return shouldBeVisible
         return prev
@@ -55,12 +55,12 @@ export default function Header({ hideUntilScroll = false }: HeaderProps) {
     }
 
     window.addEventListener('scroll', handleScroll, { passive: true })
-    handleScroll()
+    handleScroll() // 初期チェック
 
     return () => window.removeEventListener('scroll', handleScroll)
   }, [hideUntilScroll])
 
-  // 表示判定ロジック
+  // 最終的な表示判定（派生状態）
   const isVisible = !hideUntilScroll || isScrolledVisible
 
   return (
@@ -109,14 +109,16 @@ export default function Header({ hideUntilScroll = false }: HeaderProps) {
 
           {/* 右側アイコンエリア */}
           <div className="ml-auto flex items-center">
+            {/* 言語切り替え */}
             <button
               onClick={() => setLanguage(language === 'ja' ? 'en' : 'ja')}
               className="flex items-center gap-1 text-xs font-bold font-jetbrains text-deep-black/60 hover:text-racing-green transition-colors px-3 py-1 border border-brass/20 rounded-full"
             >
               <GlobeAltIcon className="size-4" />
-              <span>{language.toUpperCase()}</span>
+              <span>{t('header.language')}</span>
             </button>
 
+            {/* カート */}
             <div className="ml-4 flow-root lg:ml-6">
               <Link href="/cart" className="group -m-2 flex items-center p-2">
                 <ShoppingBagIcon
@@ -126,7 +128,7 @@ export default function Header({ hideUntilScroll = false }: HeaderProps) {
                 <span className="ml-2 text-sm font-medium text-deep-black group-hover:text-brass font-jetbrains">
                   {itemCount}
                 </span>
-                <span className="sr-only">{itemCount} {t('cart_items')}</span>
+                <span className="sr-only">{itemCount} {t('common.cart_items')}</span>
               </Link>
             </div>
           </div>

@@ -8,53 +8,50 @@ import {
 } from '@heroicons/react/24/outline'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
-
-// ------------------------------------------------------------------
-// Data: Origin of the name (Pricing Style)
-// ------------------------------------------------------------------
-const origins = [
-  {
-    name: 'Tactile & Time',
-    id: 'origin-ti',
-    symbol: 'Ti',
-    description: '物理的な感触（Tactile）と、積み重なる時間（Dies）。デジタルに確かな手応えを取り戻します。',
-    features: ['Tactile Experience', 'Aging (Time)', 'Physical Weight', 'Texture'],
-    highlight: false,
-  },
-  {
-    name: 'Dialogue & Interface',
-    id: 'origin-di',
-    symbol: 'Di',
-    description: '人とデジタルの対話（Dialogue）と、その接点（Interface）。感情を通わせるインターフェース。',
-    features: ['Emotional Dialogue', 'Seamless Interface', 'Human Connection', 'Interactive'],
-    highlight: true, // Core Concept
-  },
-  {
-    name: 'Idea & Artifact',
-    id: 'origin-a',
-    symbol: 'a',
-    description: '閃き（Idea）を形にする、デジタルな工芸品（Artifact）。一瞬のインスピレーションを永遠のものに。',
-    features: ['Creative Idea', 'Digital Artifact', 'Unique Identity', 'Craftsmanship'],
-    highlight: false,
-  },
-]
+import { useLanguage } from '@/context/LanguageContext'
 
 function classNames(...classes: (string | boolean | undefined | null)[]) {
   return classes.filter(Boolean).join(' ')
 }
 
 export default function About() {
+  const { t } = useLanguage()
+
+  const origins = [
+    {
+      name: 'Tactile & Time',
+      id: 'origin-ti',
+      symbol: 'Ti',
+      description: t('about.etymology_desc_ti'), // ja.ts/en.tsに追加が必要
+      features: ['Tactile Experience', 'Aging (Time)', 'Physical Weight', 'Texture'],
+      highlight: false,
+    },
+    {
+      name: 'Dialogue & Interface',
+      id: 'origin-di',
+      symbol: 'Di',
+      description: t('about.etymology_desc_di'), // ja.ts/en.tsに追加が必要
+      features: ['Emotional Dialogue', 'Seamless Interface', 'Human Connection', 'Interactive'],
+      highlight: true, 
+    },
+    {
+      name: 'Idea & Artifact',
+      id: 'origin-a',
+      symbol: 'a',
+      description: t('about.etymology_desc_a'), // ja.ts/en.tsに追加が必要
+      features: ['Creative Idea', 'Digital Artifact', 'Unique Identity', 'Craftsmanship'],
+      highlight: false,
+    },
+  ]
+
   return (
     <div className="bg-ivory min-h-screen flex flex-col font-noto text-deep-black">
       <Header />
       
       <main className="flex-grow">
         
-        {/* =========================================================================
-            1. Philosophy Section
-           ========================================================================= */}
+        {/* Philosophy Section */}
         <div className="relative isolate overflow-hidden px-6 py-24 sm:py-32 lg:overflow-visible lg:px-0">
-          
           {/* Background Pattern */}
           <div className="absolute inset-0 -z-10 overflow-hidden">
             <svg
@@ -88,14 +85,13 @@ export default function About() {
               <div className="lg:pr-4">
                 <div className="lg:max-w-lg">
                   <p className="text-base/7 font-bold text-racing-green font-jetbrains uppercase tracking-widest">
-                    Our Philosophy
+                    {t('about.philosophy_sub')}
                   </p>
                   <h1 className="mt-2 text-4xl font-bold tracking-tight text-deep-black sm:text-5xl font-playfair">
-                    Analog, Re-implemented.
+                    {t('about.philosophy_title')}
                   </h1>
                   <p className="mt-6 text-xl/8 text-deep-black/60 font-cormorant italic">
-                    フラットで無機質なデジタル生活に、『物理的な重みと音』を取り戻す。
-                    TiDiaは、触覚、接点、対話を重視し、デジタルの利便性とアナログの豊かさを融合させます。
+                    {t('about.philosophy_text')}
                   </p>
                 </div>
               </div>
@@ -115,16 +111,13 @@ export default function About() {
             <div className="lg:col-span-2 lg:col-start-1 lg:row-start-2 lg:mx-auto lg:grid lg:w-full lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8">
               <div className="lg:pr-4">
                 <div className="max-w-xl text-base/7 text-deep-black/70 lg:max-w-lg font-noto">
-                  <p>
-                    私たちは「Tactile（触覚）」、「Interface（接点）」、「Dialogue（対話）」という3つの要素を核に据えています。
-                    これらは単なる機能ではなく、ユーザーとデジタルの間に感情的な結びつきを生み出すための哲学です。
-                    時間（Dies）とアイデア（Idea）を融合させ、一瞬の閃きを永続的な価値へと変えるための道具を提供します。
-                  </p>
+                  <p>{t('about.philosophy_desc')}</p>
                   <ul role="list" className="mt-8 space-y-8 text-deep-black/60">
                     <li className="flex gap-x-3">
                       <CubeTransparentIcon aria-hidden="true" className="mt-1 size-5 flex-none text-brass" />
                       <span>
                         <strong className="font-bold text-deep-black font-playfair">Tactile Experience.</strong> 
+                        {/* 翻訳データに追加が必要ならキーにする */}
                         画面越しの操作であっても、確かな手応えと重みを感じられるようなUI/UXデザインを追求しています。
                       </span>
                     </li>
@@ -143,25 +136,17 @@ export default function About() {
                       </span>
                     </li>
                   </ul>
-                  <p className="mt-8">
-                    現代のクリエイターにとって、ツールは身体の一部です。
-                    TiDiaは、その延長線上に存在する、最も信頼できるパートナーでありたいと考えています。
-                  </p>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* =========================================================================
-            2. Testimonial Section
-           ========================================================================= */}
-        {/* overflow-hiddenを削除し、画像のネガティブマージンが効くように修正 */}
+        {/* Testimonial Section */}
         <div className="bg-ivory pt-16 pb-12 sm:pt-32 sm:pb-24 xl:pb-32">
-          <div className="bg-deep-black pb-20 sm:pb-24 xl:pb-0">
-            <div className="mx-auto flex max-w-7xl flex-col items-center gap-x-8 gap-y-10 px-6 sm:gap-y-8 lg:px-8 xl:flex-row xl:items-stretch">
-              
-              {/* Image Container with Negative Margins */}
+          <div className="bg-deep-black pb-20 sm:pb-24 xl:pb-0 relative overflow-hidden">
+            <div className="absolute top-0 right-0 -mr-20 -mt-20 w-[40rem] h-[40rem] bg-racing-green/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div className="mx-auto flex max-w-7xl flex-col items-center gap-x-8 gap-y-10 px-6 sm:gap-y-8 lg:px-8 xl:flex-row xl:items-stretch relative z-10">
               <div className="-mt-8 w-full max-w-2xl xl:-mb-8 xl:w-96 xl:flex-none">
                 <div className="relative aspect-2/1 h-full after:absolute after:inset-0 after:rounded-2xl after:inset-ring after:inset-ring-white/10 md:-mx-8 xl:mx-0 xl:aspect-auto">
                   <img
@@ -171,7 +156,6 @@ export default function About() {
                   />
                 </div>
               </div>
-
               <div className="w-full max-w-2xl xl:max-w-none xl:flex-auto xl:px-16 xl:py-24">
                 <figure className="relative isolate pt-6 sm:pt-12">
                   <svg
@@ -202,21 +186,19 @@ export default function About() {
           </div>
         </div>
 
-        {/* =========================================================================
-            3. Origin Section (Etymology - Pricing Layout Style)
-           ========================================================================= */}
+        {/* Etymology Section */}
         <div className="py-24 sm:py-32 bg-ivory">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="mx-auto max-w-4xl text-center">
               <h2 className="text-base/7 font-bold text-racing-green font-jetbrains uppercase tracking-widest">
-                Etymology
+                {t('about.etymology_sub')}
               </h2>
               <p className="mt-2 text-5xl font-bold tracking-tight text-balance text-deep-black sm:text-6xl font-playfair">
-                Origin of the name
+                {t('about.etymology_title')}
               </p>
             </div>
             <p className="mx-auto mt-6 max-w-2xl text-center text-lg font-medium text-pretty text-deep-black/60 sm:text-xl/8 font-cormorant italic">
-              &quot;Tactile, Interface, Dialogue. Merging Dies (Time) and Idea.&quot;
+              {t('about.etymology_desc')}
             </p>
             
             <div className="isolate mx-auto mt-16 grid max-w-md grid-cols-1 gap-y-8 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3">
@@ -232,20 +214,14 @@ export default function About() {
                 >
                   <div>
                     <div className="flex items-center justify-between gap-x-4">
-                      <h3
-                        id={item.id}
-                        className={classNames(
-                          item.highlight ? 'text-racing-green' : 'text-deep-black',
-                          'text-lg/8 font-bold font-playfair',
-                        )}
-                      >
+                      <h3 className={classNames(item.highlight ? 'text-racing-green' : 'text-deep-black', 'text-lg/8 font-bold font-playfair')}>
                         {item.name}
                       </h3>
-                      {item.highlight ? (
+                      {item.highlight && (
                         <p className="rounded-full bg-racing-green/10 px-2.5 py-1 text-xs/5 font-bold text-racing-green font-jetbrains">
                           Core Concept
                         </p>
-                      ) : null}
+                      )}
                     </div>
                     <p className="mt-4 text-sm/6 text-deep-black/70 font-noto">{item.description}</p>
                     <p className="mt-6 flex items-baseline gap-x-1">
@@ -260,54 +236,36 @@ export default function About() {
                       ))}
                     </ul>
                   </div>
-                  
-                  <div
-                    aria-hidden="true"
-                    className={classNames(
-                      item.highlight
-                        ? 'bg-racing-green text-ivory shadow-xs hover:bg-deep-black'
-                        : 'text-racing-green ring-1 ring-inset ring-racing-green/20 hover:ring-racing-green/40',
-                      'mt-8 block rounded-md px-3 py-2 text-center text-sm/6 font-bold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-racing-green font-jetbrains uppercase tracking-widest transition-colors cursor-default',
-                    )}
-                  >
-                    {item.highlight ? 'Main Philosophy' : 'Element'}
-                  </div>
                 </div>
               ))}
             </div>
           </div>
         </div>
 
-        {/* =========================================================================
-            4. Our People Section
-           ========================================================================= */}
+        {/* Our People Section */}
         <section className="overflow-hidden bg-ivory py-32 border-t border-brass/10">
           <div className="mx-auto max-w-7xl px-6 lg:flex lg:px-8">
             <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-12 gap-y-16 lg:mx-0 lg:max-w-none lg:min-w-full lg:flex-none lg:gap-y-8">
               <div className="lg:col-end-1 lg:w-full lg:max-w-lg lg:pb-8">
                 <h2 className="text-4xl font-bold tracking-tight text-deep-black sm:text-5xl font-playfair">
-                  Our people
+                  {t('about.people_title')}
                 </h2>
                 <p className="mt-6 text-xl/8 text-deep-black/60 font-cormorant italic">
-                  We are a collective of designers, engineers, and artisans united by a single obsession: bridging the gap between physical sensation and digital logic.
+                  {t('about.people_intro')}
                 </p>
                 <p className="mt-6 text-base/7 text-deep-black/70 font-noto">
-                  私たちTiDiaのチームは、伝統的な工芸品の「手触り」をデジタルの世界に翻訳することに情熱を注ぐ、多様なバックグラウンドを持つ専門家集団です。
-                  エンジニアリングの精密さと、芸術的な不完全さのバランスを追求しています。
+                  {t('about.people_desc')}
                 </p>
                 <div className="mt-10 flex">
-                  <a
-                    href="#"
-                    className="rounded-md bg-racing-green px-6 py-3 text-sm font-bold text-ivory shadow-xs hover:bg-deep-black focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-racing-green font-jetbrains uppercase tracking-widest transition-colors"
-                  >
-                    Join our team <span aria-hidden="true">&rarr;</span>
+                  <a href="#" className="rounded-md bg-racing-green px-6 py-3 text-sm font-bold text-ivory shadow-xs hover:bg-deep-black transition-colors font-jetbrains uppercase tracking-widest">
+                    {t('about.join_team')} <span aria-hidden="true">&rarr;</span>
                   </a>
                 </div>
               </div>
               <div className="flex flex-wrap items-start justify-end gap-6 sm:gap-8 lg:contents">
                 <div className="w-0 flex-auto lg:ml-auto lg:w-auto lg:flex-none lg:self-end">
                   <img
-                    alt="Team member 1"
+                    alt="Team member"
                     src="https://images.unsplash.com/photo-1670272502246-768d249768ca?ixlib=rb-4.0.3&auto=format&fit=crop&w=1152&q=80"
                     className="aspect-7/5 w-148 max-w-none rounded-2xl bg-gray-50 object-cover max-sm:w-120 border border-brass/10 grayscale hover:grayscale-0 transition-all duration-700"
                   />
@@ -315,21 +273,21 @@ export default function About() {
                 <div className="contents lg:col-span-2 lg:col-end-2 lg:ml-auto lg:flex lg:w-148 lg:items-start lg:justify-end lg:gap-x-8">
                   <div className="order-first flex w-64 flex-none justify-end self-end max-sm:w-40 lg:w-auto">
                     <img
-                      alt="Team member 2"
+                      alt="Team member"
                       src="https://images.unsplash.com/photo-1605656816944-971cd5c1407f?ixlib=rb-4.0.3&auto=format&fit=crop&w=768&h=604&q=80"
                       className="aspect-4/3 w-[24rem] max-w-none flex-none rounded-2xl bg-gray-50 object-cover border border-brass/10 grayscale hover:grayscale-0 transition-all duration-700"
                     />
                   </div>
                   <div className="flex w-96 flex-auto justify-end lg:w-auto lg:flex-none">
                     <img
-                      alt="Team member 3"
+                      alt="Team member"
                       src="https://images.unsplash.com/photo-1568992687947-868a62a9f521?ixlib=rb-4.0.3&auto=format&fit=crop&w=1152&h=842&q=80"
                       className="aspect-7/5 w-148 max-w-none flex-none rounded-2xl bg-gray-50 object-cover max-sm:w-120 border border-brass/10 grayscale hover:grayscale-0 transition-all duration-700"
                     />
                   </div>
                   <div className="hidden sm:block sm:w-0 sm:flex-auto lg:w-auto lg:flex-none">
                     <img
-                      alt="Team member 4"
+                      alt="Team member"
                       src="https://images.unsplash.com/photo-1612872087720-bb876e2e67d1?ixlib=rb-4.0.3&auto=format&fit=crop&w=768&h=604&q=80"
                       className="aspect-4/3 w-[24rem] max-w-none rounded-2xl bg-gray-50 object-cover border border-brass/10 grayscale hover:grayscale-0 transition-all duration-700"
                     />

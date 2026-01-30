@@ -26,16 +26,16 @@ export default function Hero() {
 
       <div className="relative mx-auto flex max-w-3xl flex-col items-center px-6 py-32 text-center sm:py-64 lg:px-0 z-10">
         <h1 className="text-4xl font-bold tracking-tight text-ivory lg:text-6xl font-playfair animate-fade-in-up">
-          {t('hero_tagline')}
+          {t('home.hero_tagline')}
         </h1>
         <p className="mt-4 text-xl text-ivory font-noto opacity-90 max-w-2xl">
-          {t('hero_description')}
+          {t('home.hero_description')}
         </p>
         <button
           onClick={scrollToProducts}
           className="mt-8 inline-block rounded-md border border-transparent bg-ivory px-8 py-3 text-base font-bold text-deep-black hover:bg-white transition-colors font-jetbrains uppercase tracking-widest"
         >
-          {t('hero_cta')}
+          {t('home.hero_cta')}
         </button>
       </div>
     </div>
