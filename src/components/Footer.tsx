@@ -2,12 +2,13 @@
 
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { fetchProducts, ParsedProduct } from '@/lib/firestore'
+import { fetchProducts } from '@/lib/firestore'
+import type { Product } from '@/types/product'
 import { useLanguage } from '@/context/LanguageContext'
 
 export default function Footer() {
   const { t } = useLanguage()
-  const [products, setProducts] = useState<ParsedProduct[]>([])
+  const [products, setProducts] = useState<Product[]>([])
 
   useEffect(() => {
     fetchProducts().then(data => {

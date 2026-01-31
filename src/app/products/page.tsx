@@ -4,12 +4,13 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
-import { fetchProducts, ParsedProduct } from '@/lib/firestore'
+import { fetchProducts } from '@/lib/firestore'
+import type { Product } from '@/types/product'
 import { useLanguage } from '@/context/LanguageContext'
 
 export default function ProductsPage() {
   const { t } = useLanguage()
-  const [products, setProducts] = useState<ParsedProduct[]>([])
+  const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
 
   const perks = [
@@ -63,7 +64,7 @@ export default function ProductsPage() {
               </div>
               <div className="absolute inset-0 bg-deep-black opacity-40" />
             </div>
-            <div className="h-32 w-full bg-ivory md:h-40 lg:h-48" />
+            <div className="h-16 w-full bg-ivory md:h-20 lg:h-24" />
           </div>
 
           <div className="relative mx-auto max-w-3xl px-4 pb-96 text-center sm:px-6 sm:pb-0 lg:px-8">
@@ -78,7 +79,7 @@ export default function ProductsPage() {
                 </div>
                 <div className="absolute inset-0 bg-deep-black opacity-40" />
               </div>
-              <div className="h-48 w-full bg-ivory" />
+              <div className="h-24 w-full bg-ivory" />
             </div>
             <div className="relative py-32">
               <h1 className="text-4xl font-bold tracking-tight text-ivory sm:text-5xl md:text-6xl font-playfair">
@@ -87,14 +88,6 @@ export default function ProductsPage() {
               <p className="mt-4 text-xl text-ivory/80 font-cormorant italic">
                 {t('products.subtitle')}
               </p>
-              <div className="mt-8 sm:mt-12">
-                <a
-                  href="#trending"
-                  className="inline-block rounded-md border border-transparent bg-ivory px-8 py-3 font-bold text-deep-black hover:bg-white font-jetbrains uppercase tracking-widest transition-colors"
-                >
-                  {t('common.shop_now')}
-                </a>
-              </div>
             </div>
           </div>
         </div>
@@ -105,17 +98,13 @@ export default function ProductsPage() {
               <h2 id="favorites-heading" className="text-2xl font-bold tracking-tight text-deep-black font-playfair">
                 {t('products.trending_title')}
               </h2>
-              <a href="#" className="hidden text-sm font-bold text-racing-green hover:text-deep-black md:block font-jetbrains uppercase tracking-widest transition-colors">
-                {t('products.shop_all')}
-                <span aria-hidden="true"> &rarr;</span>
-              </a>
             </div>
 
             <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 md:grid-cols-4 md:gap-y-0 lg:gap-x-8">
               {loading ? (
                 [...Array(4)].map((_, i) => (
                   <div key={i} className="animate-pulse">
-                    <div className="h-56 w-full rounded-md bg-gray-200 lg:h-72 xl:h-80" />
+                    <div className="aspect-square w-full rounded-md bg-gray-200" />
                     <div className="mt-4 h-4 w-3/4 bg-gray-200 rounded" />
                     <div className="mt-2 h-4 w-1/4 bg-gray-200 rounded" />
                   </div>
@@ -123,11 +112,11 @@ export default function ProductsPage() {
               ) : (
                 products.map((product) => (
                   <div key={product.id} className="group relative">
-                    <div className="h-56 w-full overflow-hidden rounded-md border border-brass/10 bg-gray-100 group-hover:opacity-75 lg:h-72 xl:h-80 transition-opacity">
-                      <img 
-                        alt={product.name} 
-                        src={product.images[0]} 
-                        className="size-full object-cover object-center" 
+                    <div className="aspect-square w-full overflow-hidden rounded-md border border-brass/10 bg-gray-200">
+                      <img
+                        alt={product.name}
+                        src={product.images[0]}
+                        className="h-full w-full object-cover object-center group-hover:opacity-75 transition-opacity duration-300"
                       />
                     </div>
                     <h3 className="mt-4 text-sm font-bold text-deep-black font-playfair">
@@ -147,12 +136,6 @@ export default function ProductsPage() {
               )}
             </div>
 
-            <div className="mt-8 text-sm md:hidden">
-              <a href="#" className="font-bold text-racing-green hover:text-deep-black font-jetbrains uppercase tracking-widest transition-colors">
-                {t('products.shop_all')}
-                <span aria-hidden="true"> &rarr;</span>
-              </a>
-            </div>
           </div>
         </section>
 

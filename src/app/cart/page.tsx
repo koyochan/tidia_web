@@ -7,15 +7,16 @@ import { CheckIcon, XMarkIcon as XMarkIconMini, InformationCircleIcon } from '@h
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { useCart } from '@/context/CartContext'
-import { fetchProducts, ParsedProduct } from '@/lib/firestore'
+import { fetchProducts } from '@/lib/firestore'
+import type { Product } from '@/types/product'
 import { useNotification } from '@/context/NotificationContext'
 import { useLanguage } from '@/context/LanguageContext'
 
 export default function CartPage() {
   const { cart, removeItem, updateQuantity, subtotal } = useCart()
   const { showNotification } = useNotification()
-  const { t } = useLanguage()
-  const [relatedProducts, setRelatedProducts] = useState<ParsedProduct[]>([])
+  const { language, t } = useLanguage()
+  const [relatedProducts, setRelatedProducts] = useState<Product[]>([])
   
   useEffect(() => {
     fetchProducts().then(allProducts => {
@@ -226,7 +227,7 @@ export default function CartPage() {
                         {relatedProduct.name}
                       </Link>
                     </h3>
-                    <p className="mt-1 text-sm text-deep-black/60 font-cormorant italic">{relatedProduct.subDescription}</p>
+                    <p className="mt-1 text-sm text-deep-black/60 font-cormorant italic">{relatedProduct.i18n?.[language]?.subDescription}</p>
                   </div>
                   <p className="text-sm font-medium text-brass font-jetbrains">¥{(relatedProduct.price || 0).toLocaleString()}</p>
                 </div>

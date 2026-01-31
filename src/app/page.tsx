@@ -8,10 +8,11 @@ import ProductDetails from "@/components/ProductDetails";
 import FocusSection from "@/components/FocusSection";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { fetchProducts, ParsedProduct } from "@/lib/firestore";
+import { fetchProducts } from "@/lib/firestore";
+import type { Product as ProductType } from "@/types/product";
 
 export default function Home() {
-  const [featuredProduct, setFeaturedProduct] = useState<ParsedProduct | null>(null);
+  const [featuredProduct, setFeaturedProduct] = useState<ProductType | null>(null);
 
   useEffect(() => {
     fetchProducts().then(products => {

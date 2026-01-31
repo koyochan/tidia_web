@@ -2,8 +2,10 @@
 
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import { useLanguage } from '@/context/LanguageContext'
 
 export default function ApplicationPage() {
+  const { t } = useLanguage()
   return (
     <div className="bg-ivory min-h-screen flex flex-col font-noto">
       <Header />
@@ -49,10 +51,10 @@ export default function ApplicationPage() {
               <div className="relative flex h-full flex-col overflow-hidden rounded-[calc(var(--radius-lg)+1px)] lg:rounded-l-[calc(2rem+1px)]">
                 <div className="px-8 pt-8 pb-3 sm:px-10 sm:pt-10 sm:pb-0">
                   <p className="mt-2 text-lg font-bold tracking-tight text-deep-black max-lg:text-center font-playfair">
-                    Mobile Friendly
+                    {t('application.mobile_title')}
                   </p>
                   <p className="mt-2 max-w-lg text-sm/6 text-deep-black/60 max-lg:text-center font-noto">
-                    TiDiaの製品体験は、スマートフォンやタブレットでも変わらぬ美しさを保ちます。外出先でも直感的な操作が可能です。
+                    {t('application.mobile_desc')}
                   </p>
                 </div>
                 <div className="@container relative min-h-120 w-full grow max-lg:mx-auto max-lg:max-w-sm">
@@ -73,9 +75,9 @@ export default function ApplicationPage() {
               <div className="absolute inset-px rounded-lg bg-white max-lg:rounded-t-4xl border border-brass/10" />
               <div className="relative flex h-full flex-col overflow-hidden rounded-[calc(var(--radius-lg)+1px)] max-lg:rounded-t-[calc(2rem+1px)]">
                 <div className="px-8 pt-8 sm:px-10 sm:pt-10">
-                  <p className="mt-2 text-lg font-bold tracking-tight text-deep-black max-lg:text-center font-playfair">Unrivaled Performance</p>
+                  <p className="mt-2 text-lg font-bold tracking-tight text-deep-black max-lg:text-center font-playfair">{t('application.performance_title')}</p>
                   <p className="mt-2 max-w-lg text-sm/6 text-deep-black/60 max-lg:text-center font-noto">
-                    最新のテクノロジーを駆使し、一瞬の澱みもない滑らかな動作を実現。アナログの即応性をデジタルで再現しました。
+                    {t('application.performance_desc')}
                   </p>
                 </div>
                 <div className="flex flex-1 items-center justify-center px-8 max-lg:pt-10 max-lg:pb-12 sm:px-10 lg:pb-2">
@@ -94,9 +96,9 @@ export default function ApplicationPage() {
               <div className="absolute inset-px rounded-lg bg-white border border-brass/10" />
               <div className="relative flex h-full flex-col overflow-hidden rounded-[calc(var(--radius-lg)+1px)]">
                 <div className="px-8 pt-8 sm:px-10 sm:pt-10">
-                  <p className="mt-2 text-lg font-bold tracking-tight text-deep-black max-lg:text-center font-playfair">Absolute Security</p>
+                  <p className="mt-2 text-lg font-bold tracking-tight text-deep-black max-lg:text-center font-playfair">{t('application.security_title')}</p>
                   <p className="mt-2 max-w-lg text-sm/6 text-deep-black/60 max-lg:text-center font-noto">
-                    あなたのデータは、厳重な暗号化によって保護されます。プライバシーこそが、真のラグジュアリーの基礎です。
+                    {t('application.security_desc')}
                   </p>
                 </div>
                 <div className="@container flex flex-1 items-center max-lg:py-6 lg:pb-2">
@@ -116,10 +118,10 @@ export default function ApplicationPage() {
               <div className="relative flex h-full flex-col overflow-hidden rounded-[calc(var(--radius-lg)+1px)] max-lg:rounded-b-[calc(2rem+1px)] lg:rounded-r-[calc(2rem+1px)]">
                 <div className="px-8 pt-8 pb-3 sm:px-10 sm:pt-10 sm:pb-0">
                   <p className="mt-2 text-lg font-bold tracking-tight text-deep-black max-lg:text-center font-playfair">
-                    Powerful Integrations
+                    {t('application.integrations_title')}
                   </p>
                   <p className="mt-2 max-w-lg text-sm/6 text-deep-black/60 max-lg:text-center font-noto">
-                    外部ツールとのシームレスな連携を可能にする強力なAPI。既存のエコシステムをTiDiaが拡張します。
+                    {t('application.integrations_desc')}
                   </p>
                 </div>
                 <div className="relative min-h-120 w-full grow">

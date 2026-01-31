@@ -34,6 +34,9 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       const savedLang = localStorage.getItem('tidia-lang') as Language
       if (savedLang && (savedLang === 'ja' || savedLang === 'en')) {
         setLanguage(savedLang)
+      } else {
+        const browserLang = navigator.language || navigator.languages?.[0] || ''
+        setLanguage(browserLang.startsWith('ja') ? 'ja' : 'en')
       }
       setIsInitialized(true)
     }, 0)

@@ -31,6 +31,7 @@ export default function Header({ hideUntilScroll = false }: HeaderProps) {
     pages: [
       { name: t('header.about'), href: '/about' },
       { name: t('header.products'), href: '/products' },
+      { name: t('header.docs'), href: '/docs' },
       { name: t('header.application'), href: '/application' },
       { name: t('header.contact'), href: '/contact' },
     ],

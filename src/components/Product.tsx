@@ -2,13 +2,14 @@
 
 import { StarIcon } from '@heroicons/react/20/solid'
 import { useEffect, useState } from 'react'
-import { fetchProducts, ParsedProduct } from '@/lib/firestore'
+import { fetchProducts } from '@/lib/firestore'
+import type { Product } from '@/types/product'
 import { useLanguage } from '@/context/LanguageContext'
 
 export default function Product() {
-  const [products, setProducts] = useState<ParsedProduct[]>([])
+  const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
-  const { t } = useLanguage()
+  const { language, t } = useLanguage()
 
   useEffect(() => {
     fetchProducts().then(data => {
@@ -47,7 +48,7 @@ export default function Product() {
                       {product.name}
                     </a>
                   </h3>
-                  <p className="mt-1 text-sm text-deep-black/60 font-cormorant italic">{product.subDescription}</p>
+                  <p className="mt-1 text-sm text-deep-black/60 font-cormorant italic">{product.i18n?.[language]?.subDescription}</p>
                 </div>
                 <p className="text-sm font-medium text-brass font-jetbrains">¥{(product.price || 0).toLocaleString()}</p>
               </div>

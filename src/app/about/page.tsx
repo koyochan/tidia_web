@@ -21,24 +21,24 @@ export default function About() {
     {
       name: 'Tactile & Time',
       id: 'origin-ti',
-      symbol: 'Ti',
-      description: t('about.etymology_desc_ti'), // ja.ts/en.tsに追加が必要
+      tagline: 'Touch the Real',
+      description: t('about.etymology_desc_ti'),
       features: ['Tactile Experience', 'Aging (Time)', 'Physical Weight', 'Texture'],
       highlight: false,
     },
     {
       name: 'Dialogue & Interface',
       id: 'origin-di',
-      symbol: 'Di',
-      description: t('about.etymology_desc_di'), // ja.ts/en.tsに追加が必要
+      tagline: 'Feel the Connection',
+      description: t('about.etymology_desc_di'),
       features: ['Emotional Dialogue', 'Seamless Interface', 'Human Connection', 'Interactive'],
-      highlight: true, 
+      highlight: true,
     },
     {
       name: 'Idea & Artifact',
       id: 'origin-a',
-      symbol: 'a',
-      description: t('about.etymology_desc_a'), // ja.ts/en.tsに追加が必要
+      tagline: 'Shape the Moment',
+      description: t('about.etymology_desc_a'),
       features: ['Creative Idea', 'Digital Artifact', 'Unique Identity', 'Craftsmanship'],
       highlight: false,
     },
@@ -87,7 +87,7 @@ export default function About() {
                   <p className="text-base/7 font-bold text-racing-green font-jetbrains uppercase tracking-widest">
                     {t('about.philosophy_sub')}
                   </p>
-                  <h1 className="mt-2 text-4xl font-bold tracking-tight text-deep-black sm:text-5xl font-playfair">
+                  <h1 className="mt-2 text-4xl font-bold tracking-tight text-deep-black sm:text-5xl font-playfair whitespace-nowrap">
                     {t('about.philosophy_title')}
                   </h1>
                   <p className="mt-6 text-xl/8 text-deep-black/60 font-cormorant italic">
@@ -116,23 +116,22 @@ export default function About() {
                     <li className="flex gap-x-3">
                       <CubeTransparentIcon aria-hidden="true" className="mt-1 size-5 flex-none text-brass" />
                       <span>
-                        <strong className="font-bold text-deep-black font-playfair">Tactile Experience.</strong> 
-                        {/* 翻訳データに追加が必要ならキーにする */}
-                        画面越しの操作であっても、確かな手応えと重みを感じられるようなUI/UXデザインを追求しています。
+                        <strong className="font-bold text-deep-black font-playfair">Tactile Experience.</strong>{' '}
+                        {t('about.value_tactile')}
                       </span>
                     </li>
                     <li className="flex gap-x-3">
                       <FingerPrintIcon aria-hidden="true" className="mt-1 size-5 flex-none text-brass" />
                       <span>
-                        <strong className="font-bold text-deep-black font-playfair">Unique Identity.</strong> 
-                        一つ一つの製品が、使い手の個性を反映し、経年変化のように馴染んでいくデジタルアーティファクト。
+                        <strong className="font-bold text-deep-black font-playfair">Unique Identity.</strong>{' '}
+                        {t('about.value_identity')}
                       </span>
                     </li>
                     <li className="flex gap-x-3">
                       <SparklesIcon aria-hidden="true" className="mt-1 size-5 flex-none text-brass" />
                       <span>
-                        <strong className="font-bold text-deep-black font-playfair">Timeless Value.</strong> 
-                        トレンドに左右されない、普遍的な美しさと実用性を兼ね備えた設計。
+                        <strong className="font-bold text-deep-black font-playfair">Timeless Value.</strong>{' '}
+                        {t('about.value_timeless')}
                       </span>
                     </li>
                   </ul>
@@ -144,15 +143,14 @@ export default function About() {
 
         {/* Testimonial Section */}
         <div className="bg-ivory pt-16 pb-12 sm:pt-32 sm:pb-24 xl:pb-32">
-          <div className="bg-deep-black pb-20 sm:pb-24 xl:pb-0 relative overflow-hidden">
-            <div className="absolute top-0 right-0 -mr-20 -mt-20 w-[40rem] h-[40rem] bg-racing-green/10 rounded-full blur-3xl pointer-events-none"></div>
-            <div className="mx-auto flex max-w-7xl flex-col items-center gap-x-8 gap-y-10 px-6 sm:gap-y-8 lg:px-8 xl:flex-row xl:items-stretch relative z-10">
+          <div className="bg-deep-black pb-20 sm:pb-24 xl:pb-0">
+            <div className="mx-auto flex max-w-7xl flex-col items-center gap-x-8 gap-y-10 px-6 sm:gap-y-8 lg:px-8 xl:flex-row xl:items-stretch">
               <div className="-mt-8 w-full max-w-2xl xl:-mb-8 xl:w-96 xl:flex-none">
-                <div className="relative aspect-2/1 h-full after:absolute after:inset-0 after:rounded-2xl after:inset-ring after:inset-ring-white/10 md:-mx-8 xl:mx-0 xl:aspect-auto">
+                <div className="relative aspect-2/1 h-full after:absolute after:inset-0 after:rounded-2xl after:inset-ring after:inset-ring-white/15 md:-mx-8 xl:mx-0 xl:aspect-auto">
                   <img
                     alt="Creative professional working"
                     src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2102&q=80"
-                    className="absolute inset-0 size-full rounded-2xl bg-gray-800 object-cover shadow-2xl grayscale contrast-125"
+                    className="absolute inset-0 size-full rounded-2xl bg-gray-800 object-cover shadow-2xl"
                   />
                 </div>
               </div>
@@ -171,14 +169,11 @@ export default function About() {
                     <use x={86} href="#b56e9dab-6ccb-4d32-ad02-6b4bb5d9bbeb" />
                   </svg>
                   <blockquote className="text-xl/8 font-medium text-ivory sm:text-2xl/9 font-cormorant italic">
-                    <p>
-                      &quot;TiDiaの製品を手にした瞬間、デジタルワークフローの中で失われていた『重み』を思い出しました。
-                      これは単なるツールではなく、思考を物理的に刻むための儀式です。&quot;
-                    </p>
+                    <p>&quot;{t('about.ceo_quote')}&quot;</p>
                   </blockquote>
                   <figcaption className="mt-8 text-base">
-                    <div className="font-semibold text-brass font-playfair">Sarah Jenkins</div>
-                    <div className="mt-1 text-ivory/60 font-jetbrains text-sm">Design Director at Studio Monochrome</div>
+                    <div className="font-semibold text-brass font-playfair">{t('about.ceo_name')}</div>
+                    <div className="mt-1 text-ivory/60 font-jetbrains text-sm">{t('about.ceo_title')}</div>
                   </figcaption>
                 </figure>
               </div>
@@ -224,8 +219,8 @@ export default function About() {
                       )}
                     </div>
                     <p className="mt-4 text-sm/6 text-deep-black/70 font-noto">{item.description}</p>
-                    <p className="mt-6 flex items-baseline gap-x-1">
-                      <span className="text-5xl font-bold tracking-tight text-deep-black font-playfair">{item.symbol}</span>
+                    <p className="mt-6 text-3xl font-bold tracking-tight text-deep-black font-playfair">
+                      {item.tagline}
                     </p>
                     <ul role="list" className="mt-8 space-y-3 text-sm/6 text-deep-black/60 font-jetbrains">
                       {item.features.map((feature) => (
@@ -257,7 +252,7 @@ export default function About() {
                   {t('about.people_desc')}
                 </p>
                 <div className="mt-10 flex">
-                  <a href="#" className="rounded-md bg-racing-green px-6 py-3 text-sm font-bold text-ivory shadow-xs hover:bg-deep-black transition-colors font-jetbrains uppercase tracking-widest">
+                  <a href="/contact" className="rounded-md bg-racing-green px-6 py-3 text-sm font-bold text-ivory shadow-xs hover:bg-deep-black transition-colors font-jetbrains uppercase tracking-widest">
                     {t('about.join_team')} <span aria-hidden="true">&rarr;</span>
                   </a>
                 </div>

@@ -1,28 +1,23 @@
-import { ParsedProduct } from '@/lib/firestore'
+'use client'
+
+import type { Product } from '@/types/product'
+import { useLanguage } from '@/context/LanguageContext'
 
 interface ProductDetailsProps {
-  product?: ParsedProduct
+  product?: Product
 }
 
 export default function ProductDetails({ product }: ProductDetailsProps) {
-  // 以前のハードコードされたデフォルトデータ
-  const defaultData = {
-    detailTitle: "細部へのこだわり",
-    detailDescription: "特許取得済みのパッド入りスリーブ構造が、あなたの大切なアイテムを日々の冒険や長時間の移動、過酷な旅行スケジュールから守ります。",
-    feature1Img: "https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-04-detail-product-shot-01.jpg",
-    feature1Desc: "20Lモデルは、370本のキャンディバー、6つのチップスシリンダー、1220個の標準的なガムボール、またはあなたが望むあらゆるお菓子の組み合わせを収納するのに十分なスペースがあります。はい、私たちが計算しました。",
-    feature2Img: "https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-04-detail-product-shot-02.jpg",
-    feature2Desc: "複数のコンパートメントオプションで、スナックの整理整頓をレベルアップ。クイックアクセスポーチは、予期せぬ空腹やシェアが必要な場面にもすぐに対応できます。"
-  }
+  const { t } = useLanguage()
 
-  const data = product ? {
-    detailTitle: product.detailTitle || defaultData.detailTitle,
-    detailDescription: product.detailDescription || defaultData.detailDescription,
-    feature1Img: product.feature1Img || defaultData.feature1Img,
-    feature1Desc: product.feature1Desc || defaultData.feature1Desc,
-    feature2Img: product.feature2Img || defaultData.feature2Img,
-    feature2Desc: product.feature2Desc || defaultData.feature2Desc,
-  } : defaultData
+  const data = {
+    detailTitle: t('product_detail.detail_title_default'),
+    detailDescription: t('product_detail.detail_desc_default'),
+    feature1Img: product?.feature1Img || "https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-04-detail-product-shot-01.jpg",
+    feature1Desc: t('product_detail.feature1_desc_default'),
+    feature2Img: product?.feature2Img || "https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-04-detail-product-shot-02.jpg",
+    feature2Desc: t('product_detail.feature2_desc_default'),
+  }
 
   return (
     <div className="bg-ivory text-deep-black font-noto">

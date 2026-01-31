@@ -1,34 +1,36 @@
 'use client'
 
-const features = [
-  {
-    name: 'ミニマルで考え抜かれたデザイン',
-    description:
-      '私たちのラップトップスリーブはコンパクトで、13インチのデバイスに精密にフィットします。ジッパーにより内部に簡単にアクセスでき、フロントポーチは充電ケーブルの収納に便利です。',
-    imageSrc: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-feature-07-detail-01.jpg',
-    imageAlt: '白いキャンバス地のラップトップスリーブ。グレーのフェルトの裏地、シルバーのジッパー、タンレザーのジッパープル。',
-  },
-  {
-    name: '洗練されたディテール',
-    description:
-      '細部に至るまで、最高の素材と仕上げでデザインしています。このラップトップスリーブは、耐久性のあるキャンバス地にダブルステッチを施し、フェルトの裏地と日常の使用に耐える高品質なジッパーを採用しています。',
-    imageSrc: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-feature-07-detail-02.jpg',
-    imageAlt: 'タンレザーとシルバーのリベットが付いたジッパープルのディテール。',
-  },
-]
+import { useLanguage } from '@/context/LanguageContext'
 
 function classNames(...classes: (string | boolean | undefined | null)[]) {
   return classes.filter(Boolean).join(' ')
 }
 
 export default function BrandStory() {
+  const { t } = useLanguage()
+
+  const features = [
+    {
+      name: t('home.brand_feature1_name'),
+      description: t('home.brand_feature1_desc'),
+      imageSrc: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-feature-07-detail-01.jpg',
+      imageAlt: t('home.brand_feature1_alt'),
+    },
+    {
+      name: t('home.brand_feature2_name'),
+      description: t('home.brand_feature2_desc'),
+      imageSrc: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-feature-07-detail-02.jpg',
+      imageAlt: t('home.brand_feature2_alt'),
+    },
+  ]
+
   return (
     <div className="bg-ivory text-deep-black font-noto">
       <div className="mx-auto max-w-2xl px-4 py-24 sm:px-6 sm:py-32 lg:max-w-7xl lg:px-8">
         <div className="mx-auto max-w-3xl text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-deep-black sm:text-4xl font-playfair">あなたのデバイスを守る</h2>
+          <h2 className="text-3xl font-bold tracking-tight text-deep-black sm:text-4xl font-playfair">{t('home.brand_title')}</h2>
           <p className="mt-4 text-deep-black/60 font-cormorant text-lg italic">
-            デジタルクリエイティブとして、ラップトップやタブレットは仕事の中心です。その品質と外見に見合った、ファブリックスリーブでデバイスを安全に保ちましょう。
+            {t('home.brand_desc')}
           </p>
         </div>
 

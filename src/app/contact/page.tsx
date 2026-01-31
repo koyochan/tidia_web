@@ -113,8 +113,8 @@ export default function ContactPage() {
                       <span className="sr-only">Address</span>
                       <BuildingOffice2Icon aria-hidden="true" className="h-6 w-6 text-brass" />
                     </dt>
-                    <dd className="font-noto">
-                      〒100-0005<br />東京都千代田区丸の内 1-1-1
+                    <dd className="font-noto whitespace-pre-line">
+                      {t('contact.address')}
                     </dd>
                   </div>
                   <div className="flex gap-x-4 items-center">

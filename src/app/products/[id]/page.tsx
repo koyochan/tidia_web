@@ -6,8 +6,10 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import ProductDetails from '@/components/ProductDetails'
 import { useCart } from '@/context/CartContext'
-import { fetchProductById, fetchProducts, ParsedProduct } from '@/lib/firestore'
+import { fetchProductById, fetchProducts } from '@/lib/firestore'
+import type { Product } from '@/types/product'
 import { useNotification } from '@/context/NotificationContext'
+import { useLanguage } from '@/context/LanguageContext'
 import {
   Disclosure,
   DisclosureButton,
@@ -41,8 +43,9 @@ export default function ProductPage() {
   const productId = params.id as string
   const { addItem } = useCart()
   const { showNotification } = useNotification()
-  const [product, setProduct] = useState<ParsedProduct | null>(null)
-  const [relatedProducts, setRelatedProducts] = useState<ParsedProduct[]>([])
+  const { language, t } = useLanguage()
+  const [product, setProduct] = useState<Product | null>(null)
+  const [relatedProducts, setRelatedProducts] = useState<Product[]>([])
   const [selectedColor, setSelectedColor] = useState<string>("")
   const [selectedMaterial, setSelectedMaterial] = useState<string>("")
   const [loading, setLoading] = useState(true)
@@ -127,8 +130,8 @@ export default function ProductPage() {
     })
     
     showNotification(
-      'カートに追加しました',
-      `${product.name} がカートに追加されました。引き続きお買い物をお楽しみください。`
+      t('product_detail.added_to_cart'),
+      `${product.name} ${t('product_detail.added_to_cart_desc')}`
     )
   }
 
@@ -178,7 +181,7 @@ export default function ProductPage() {
               <h1 className="text-4xl font-bold tracking-tight text-deep-black font-playfair">{product.name}</h1>
 
               <div className="mt-3">
-                <h2 className="sr-only">商品の情報</h2>
+                <h2 className="sr-only">{t('product_detail.product_info')}</h2>
                 <p className="text-3xl tracking-tight text-brass font-jetbrains font-medium">¥{totalPrice.toLocaleString()}</p>
               </div>
 
@@ -195,7 +198,7 @@ export default function ProductPage() {
 
               <div className="mt-6">
                 <div
-                  dangerouslySetInnerHTML={{ __html: product.description }}
+                  dangerouslySetInnerHTML={{ __html: product.i18n?.[language]?.description || '' }}
                   className="space-y-6 text-base text-deep-black/80 font-cormorant text-lg italic leading-relaxed"
                 />
               </div>
@@ -252,7 +255,7 @@ export default function ProductPage() {
                     onClick={handleAddToCart}
                     className="flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-racing-green px-8 py-3 text-base font-bold text-ivory hover:bg-deep-black focus:ring-2 focus:ring-racing-green focus:ring-offset-2 focus:ring-offset-ivory focus:outline-hidden sm:w-full font-jetbrains uppercase tracking-widest transition-colors"
                   >
-                    カートに追加
+                    {t('product_detail.add_to_cart')}
                   </button>
                 </div>
               </form>
@@ -260,7 +263,7 @@ export default function ProductPage() {
               <section className="mt-12 divide-y divide-brass/20 border-t border-brass/20">
                 <Disclosure as="div">
                   <DisclosureButton className="group relative flex w-full items-center justify-between py-6 text-left">
-                    <span className="text-sm font-medium text-deep-black group-data-open:text-racing-green font-playfair text-lg">商品仕様</span>
+                    <span className="text-sm font-medium text-deep-black group-data-open:text-racing-green font-playfair text-lg">{t('product_detail.specifications')}</span>
                     <span className="ml-6 flex items-center">
                       <PlusIcon className="block size-6 text-brass/60 group-data-open:hidden" />
                       <MinusIcon className="hidden size-6 text-racing-green group-data-open:block" />
@@ -269,16 +272,16 @@ export default function ProductPage() {
                   <DisclosurePanel className="pb-6">
                     <dl className="grid grid-cols-1 gap-y-4 text-sm font-noto">
                       <div className="flex justify-between border-b border-brass/10 pb-2">
-                        <dt className="text-deep-black/60">寸法</dt>
+                        <dt className="text-deep-black/60">{t('product_detail.dimensions')}</dt>
                         <dd className="text-deep-black">{product.dimensions}</dd>
                       </div>
                       <div className="flex justify-between border-b border-brass/10 pb-2">
-                        <dt className="text-deep-black/60">重量</dt>
+                        <dt className="text-deep-black/60">{t('product_detail.weight')}</dt>
                         <dd className="text-deep-black">{product.weight}</dd>
                       </div>
                       <div className="flex justify-between border-b border-brass/10 pb-2">
-                        <dt className="text-deep-black/60">配送目安</dt>
-                        <dd className="text-deep-black">{product.shippingEstimate}</dd>
+                        <dt className="text-deep-black/60">{t('product_detail.shipping_estimate')}</dt>
+                        <dd className="text-deep-black">{product.i18n?.[language]?.shippingEstimate}</dd>
                       </div>
                     </dl>
                   </DisclosurePanel>
@@ -290,7 +293,7 @@ export default function ProductPage() {
           <ProductDetails product={product} />
 
           <section className="mt-16 border-t border-brass/20 pt-16">
-            <h2 className="text-2xl font-bold text-deep-black font-playfair">こちらの商品もおすすめです</h2>
+            <h2 className="text-2xl font-bold text-deep-black font-playfair">{t('product_detail.related_products')}</h2>
             <div className="mt-8 grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-4">
               {relatedProducts.map((rel) => (
                 <div key={rel.id} className="group relative">
@@ -304,7 +307,7 @@ export default function ProductPage() {
                         {rel.name}
                       </a>
                     </h3>
-                    <p className="mt-1 text-sm text-deep-black/60 font-cormorant italic">{rel.subDescription}</p>
+                    <p className="mt-1 text-sm text-deep-black/60 font-cormorant italic">{rel.i18n?.[language]?.subDescription}</p>
                     <p className="mt-1 text-sm font-medium text-brass font-jetbrains">¥{(rel.price || 0).toLocaleString()}</p>
                   </div>
                 </div>
