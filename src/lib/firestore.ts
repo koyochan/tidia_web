@@ -10,24 +10,37 @@ import {
 import { db } from "./firebase";
 import type { ProductDocument, Product } from "@/types/product";
 
+export type Currency = "jpy" | "usd";
+
+export function getCurrency(language: string): Currency {
+  return language === "ja" ? "jpy" : "usd";
+}
+
+export function formatPrice(amount: number, currency: Currency): string {
+  if (currency === "usd") {
+    return `$${(amount / 100).toFixed(2)}`;
+  }
+  return `¥${amount.toLocaleString()}`;
+}
 
 /**
  * Fetch all active products with their prices
  */
-export const fetchProducts = async (): Promise<Product[]> => {
+export const fetchProducts = async (currency: Currency = "jpy"): Promise<Product[]> => {
   const productsCol = collection(db, "products");
   const q = query(productsCol, orderBy("index", "asc"));
   const productSnapshot = await getDocs(q);
 
   const products = await Promise.all(productSnapshot.docs.map(async (productDoc) => {
     const data = productDoc.data() as ProductDocument;
-    const price = await fetchPriceForProduct(productDoc.id);
+    const price = await fetchPriceForProduct(productDoc.id, currency);
 
     return {
       ...data,
       id: productDoc.id,
-      price: price?.amount ?? data.price ?? 0,
-      priceId: price?.id ?? data.priceId ?? "",
+      price: price?.amount ?? 0,
+      priceId: price?.id ?? "",
+      currency,
     } as Product;
   }));
 
@@ -37,29 +50,34 @@ export const fetchProducts = async (): Promise<Product[]> => {
 /**
  * Fetch a single product by ID
  */
-export const fetchProductById = async (productId: string): Promise<Product | null> => {
+export const fetchProductById = async (productId: string, currency: Currency = "jpy"): Promise<Product | null> => {
   const productRef = doc(db, "products", productId);
   const productSnap = await getDoc(productRef);
 
   if (!productSnap.exists()) return null;
 
   const data = productSnap.data() as ProductDocument;
-  const price = await fetchPriceForProduct(productId);
+  const price = await fetchPriceForProduct(productId, currency);
 
   return {
     ...data,
     id: productId,
-    price: price?.amount ?? data.price ?? 0,
-    priceId: price?.id ?? data.priceId ?? "",
+    price: price?.amount ?? 0,
+    priceId: price?.id ?? "",
+    currency,
   } as Product;
 };
 
 /**
- * Helper to fetch the first active price for a product
+ * Helper to fetch an active price for a product in the specified currency
  */
-const fetchPriceForProduct = async (productId: string) => {
+const fetchPriceForProduct = async (productId: string, currency: Currency) => {
   const pricesCol = collection(db, "products", productId, "prices");
-  const q = query(pricesCol, where("active", "==", true));
+  const q = query(
+    pricesCol,
+    where("active", "==", true),
+    where("currency", "==", currency)
+  );
   const priceSnapshot = await getDocs(q);
 
   if (priceSnapshot.empty) return null;

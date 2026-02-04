@@ -118,6 +118,7 @@ export const en = {
     }
   },
   application: {
+    tagline: 'Analog, Re-implemented.',
     mobile_title: 'Mobile Friendly',
     mobile_desc: 'TiDia\'s product experience maintains its beauty on smartphones and tablets. Intuitive operation is possible even on the go.',
     performance_title: 'Unrivaled Performance',
@@ -216,6 +217,17 @@ export const en = {
     care_patina_desc: 'Brass oxidizes over time, developing a distinctive deep tone. This is not degradation but the hallmark of brass products. To restore the original shine, use a commercially available brass polish.',
     care_storage_title: 'Storage',
     care_storage_desc: 'Store in the included cloth pouch. Avoiding humid environments will help prevent verdigris formation.',
+  },
+  ar: {
+    view_in_ar: 'View in AR',
+    view_3d: 'View in 3D',
+    scan_qr: 'Scan QR Code',
+    qr_instruction: 'Scan with your smartphone to experience AR',
+    place_in_room: 'Place in Your Room',
+    not_supported: 'Your device does not support AR',
+    loading: 'Loading 3D model...',
+    close: 'Close',
+    open_on_phone: 'Open on Phone',
   },
   cart: {
     title: 'Shopping Cart',

@@ -75,7 +75,7 @@ export const ja = {
   },
   about: {
     philosophy_sub: 'Our Philosophy',
-    philosophy_title: 'Analog, Re-implemented.',
+    philosophy_title: 'アナログを、再実装する。',
     philosophy_text: 'フラットで無機質なデジタル生活に、『物理的な重みと音』を取り戻す。TiDiaは、触覚、接点、対話を重視し、デジタルの利便性とアナログの豊かさを融合させます。',
     philosophy_desc: '私たちは「Tactile（触覚）」、「Interface（接点）」、「Dialogue（対話）」という3つの要素を核に据えています。',
     etymology_sub: 'Etymology',
@@ -118,6 +118,7 @@ export const ja = {
     }
   },
   application: {
+    tagline: 'アナログを、再実装する。',
     mobile_title: 'Mobile Friendly',
     mobile_desc: 'TiDiaの製品体験は、スマートフォンやタブレットでも変わらぬ美しさを保ちます。外出先でも直感的な操作が可能です。',
     performance_title: 'Unrivaled Performance',
@@ -216,6 +217,17 @@ export const ja = {
     care_patina_desc: '真鍮は時間とともに酸化し、独特の深い色合いに変化します。これは品質の劣化ではなく、真鍮製品の醍醐味です。元の輝きを取り戻したい場合は、市販の真鍮磨きクリームをご使用ください。',
     care_storage_title: '保管方法',
     care_storage_desc: '付属の布袋に入れて保管してください。湿気の多い場所を避けることで、緑青の発生を防ぐことができます。',
+  },
+  ar: {
+    view_in_ar: 'ARで見る',
+    view_3d: '3Dで見る',
+    scan_qr: 'QRコードをスキャン',
+    qr_instruction: 'スマートフォンでスキャンしてARを体験',
+    place_in_room: '部屋に配置',
+    not_supported: 'お使いのデバイスはARに対応していません',
+    loading: '3Dモデルを読み込み中...',
+    close: '閉じる',
+    open_on_phone: 'スマートフォンで開く',
   },
   cart: {
     title: 'ショッピングカート',

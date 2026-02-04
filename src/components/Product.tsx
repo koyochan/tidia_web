@@ -2,7 +2,7 @@
 
 import { StarIcon } from '@heroicons/react/20/solid'
 import { useEffect, useState } from 'react'
-import { fetchProducts } from '@/lib/firestore'
+import { fetchProducts, getCurrency, formatPrice } from '@/lib/firestore'
 import type { Product } from '@/types/product'
 import { useLanguage } from '@/context/LanguageContext'
 
@@ -11,15 +11,17 @@ export default function Product() {
   const [loading, setLoading] = useState(true)
   const { language, t } = useLanguage()
 
+  const currency = getCurrency(language)
+
   useEffect(() => {
-    fetchProducts().then(data => {
+    fetchProducts(currency).then(data => {
       setProducts(data)
       setLoading(false)
     }).catch(err => {
       console.error("Failed to fetch products", err)
       setLoading(false)
     })
-  }, [])
+  }, [currency])
 
   if (loading) return null; // またはスケルトン表示
 
@@ -50,7 +52,7 @@ export default function Product() {
                   </h3>
                   <p className="mt-1 text-sm text-deep-black/60 font-cormorant italic">{product.i18n?.[language]?.subDescription}</p>
                 </div>
-                <p className="text-sm font-medium text-brass font-jetbrains">¥{(product.price || 0).toLocaleString()}</p>
+                <p className="text-sm font-medium text-brass font-jetbrains">{formatPrice(product.price || 0, currency)}</p>
               </div>
             </div>
           ))}

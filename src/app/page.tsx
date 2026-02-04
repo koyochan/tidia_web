@@ -8,19 +8,22 @@ import ProductDetails from "@/components/ProductDetails";
 import FocusSection from "@/components/FocusSection";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { fetchProducts } from "@/lib/firestore";
+import { fetchProducts, getCurrency } from "@/lib/firestore";
+import { useLanguage } from "@/context/LanguageContext";
 import type { Product as ProductType } from "@/types/product";
 
 export default function Home() {
+  const { language } = useLanguage();
+  const currency = getCurrency(language);
   const [featuredProduct, setFeaturedProduct] = useState<ProductType | null>(null);
 
   useEffect(() => {
-    fetchProducts().then(products => {
+    fetchProducts(currency).then(products => {
       if (products.length > 0) {
         setFeaturedProduct(products[0]);
       }
     });
-  }, []);
+  }, [currency]);
 
   return (
     // bg-black -> bg-ivory に変更

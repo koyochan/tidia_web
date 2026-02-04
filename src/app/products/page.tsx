@@ -4,12 +4,13 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
-import { fetchProducts } from '@/lib/firestore'
+import { fetchProducts, getCurrency, formatPrice } from '@/lib/firestore'
 import type { Product } from '@/types/product'
 import { useLanguage } from '@/context/LanguageContext'
 
 export default function ProductsPage() {
-  const { t } = useLanguage()
+  const { language, t } = useLanguage()
+  const currency = getCurrency(language)
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -37,14 +38,14 @@ export default function ProductsPage() {
   ]
 
   useEffect(() => {
-    fetchProducts().then(data => {
+    fetchProducts(currency).then(data => {
       setProducts(data)
       setLoading(false)
     }).catch(err => {
       console.error("Failed to fetch products", err)
       setLoading(false)
     })
-  }, [])
+  }, [currency])
 
   return (
     <div className="bg-ivory font-noto text-deep-black min-h-screen flex flex-col">
@@ -129,7 +130,7 @@ export default function ProductsPage() {
                       {product.colors && product.colors.length > 0 ? product.colors[0] : 'Standard'}
                     </p>
                     <p className="mt-1 text-sm font-medium text-brass font-jetbrains">
-                      ¥{(product.price || 0).toLocaleString()}
+                      {formatPrice(product.price || 0, currency)}
                     </p>
                   </div>
                 ))

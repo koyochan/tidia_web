@@ -17,33 +17,46 @@ export interface ProductLocalizedFields {
 }
 
 /** i18n map keyed by language code */
-export type ProductI18nMap = { [lang: string]: ProductLocalizedFields };
+export type ProductI18nMap = { [lang: string]: Partial<ProductLocalizedFields> };
 
 /**
  * Firestore document shape for products/{id}
+ * Fields are stored directly on the document (no metadata map).
  */
+/** AR configuration for a product */
+export interface ProductAR {
+  enabled: boolean;
+  modelGlb?: string;
+  modelUsdz?: string;
+  poster?: string;
+  scale?: string;
+  placement?: 'floor' | 'wall';
+}
+
 export interface ProductDocument {
   name: string;
   images: string[];
   index: number;
   active: boolean;
-  price: number;
-  priceId: string;
   colors: string[];
   materials: string[];
   priceModifiers: Record<string, number>;
   variantImages: Record<string, string>;
   dimensions: string;
   weight: string;
-  stockLimit: number;
-  feature1Img: string;
-  feature2Img: string;
-  i18n: ProductI18nMap;
+  stock: number;
+  feature1Img?: string;
+  feature2Img?: string;
+  i18n?: ProductI18nMap;
+  ar?: ProductAR;
 }
 
 /**
- * UI-ready product (Firestore doc + resolved id/price from subcollection)
+ * UI-ready product (Firestore doc + resolved id)
  */
 export interface Product extends ProductDocument {
   id: string;
+  price: number;
+  priceId: string;
+  currency: string;
 }

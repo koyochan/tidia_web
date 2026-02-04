@@ -13,9 +13,7 @@ export default function ApplicationPage() {
       <main className="flex-grow py-24 sm:py-32">
         <div className="mx-auto max-w-2xl px-6 lg:max-w-7xl lg:px-8">
           <h2 className="text-center text-base/7 font-bold text-racing-green font-jetbrains uppercase tracking-widest">Digital Artifacts</h2>
-          <p className="mx-auto mt-2 max-w-lg text-center text-4xl font-bold tracking-tight text-balance text-deep-black sm:text-5xl font-playfair">
-            Analog, Re-implemented.
-          </p>
+          <p className="mx-auto mt-2 max-w-lg text-center text-4xl font-bold tracking-tight text-balance text-deep-black sm:text-5xl font-playfair whitespace-nowrap">{t('application.tagline')}</p>
           
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
             {/* Apple Store Button */}

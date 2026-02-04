@@ -6,7 +6,7 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import ProductDetails from '@/components/ProductDetails'
 import { useCart } from '@/context/CartContext'
-import { fetchProductById, fetchProducts } from '@/lib/firestore'
+import { fetchProductById, fetchProducts, getCurrency, formatPrice } from '@/lib/firestore'
 import type { Product } from '@/types/product'
 import { useNotification } from '@/context/NotificationContext'
 import { useLanguage } from '@/context/LanguageContext'
@@ -25,6 +25,12 @@ import {
   PlusIcon,
 } from '@heroicons/react/24/outline'
 import { StarIcon } from '@heroicons/react/20/solid'
+import dynamic from 'next/dynamic'
+
+// Dynamically import ARButton to avoid SSR issues
+const ARButton = dynamic(() => import('@/components/ar/ARButton'), {
+  ssr: false,
+})
 
 function classNames(...classes: (string | boolean | undefined | null)[]) {
   return classes.filter(Boolean).join(' ')
@@ -44,6 +50,7 @@ export default function ProductPage() {
   const { addItem } = useCart()
   const { showNotification } = useNotification()
   const { language, t } = useLanguage()
+  const currency = getCurrency(language)
   const [product, setProduct] = useState<Product | null>(null)
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([])
   const [selectedColor, setSelectedColor] = useState<string>("")
@@ -56,8 +63,8 @@ export default function ProductPage() {
     const loadData = async () => {
       try {
         const [found, allProducts] = await Promise.all([
-          fetchProductById(productId),
-          fetchProducts()
+          fetchProductById(productId, currency),
+          fetchProducts(currency)
         ])
 
         if (found) {
@@ -77,7 +84,7 @@ export default function ProductPage() {
     }
 
     loadData()
-  }, [productId])
+  }, [productId, currency])
 
   if (loading) return (
     <div className="bg-ivory min-h-screen flex items-center justify-center font-jetbrains">
@@ -121,7 +128,7 @@ export default function ProductPage() {
       basePrice: basePrice,
       modifiersPrice: modifiersPrice,
       totalPrice: totalPrice,
-      priceString: `¥${totalPrice.toLocaleString()}`,
+      priceString: formatPrice(totalPrice, currency),
       color: selectedColor,
       material: selectedMaterial,
       imageSrc: currentImage,
@@ -182,7 +189,7 @@ export default function ProductPage() {
 
               <div className="mt-3">
                 <h2 className="sr-only">{t('product_detail.product_info')}</h2>
-                <p className="text-3xl tracking-tight text-brass font-jetbrains font-medium">¥{totalPrice.toLocaleString()}</p>
+                <p className="text-3xl tracking-tight text-brass font-jetbrains font-medium">{formatPrice(totalPrice, currency)}</p>
               </div>
 
               <div className="mt-3">
@@ -260,6 +267,9 @@ export default function ProductPage() {
                 </div>
               </form>
 
+              {/* AR View Section */}
+              <ARButton product={product} />
+
               <section className="mt-12 divide-y divide-brass/20 border-t border-brass/20">
                 <Disclosure as="div">
                   <DisclosureButton className="group relative flex w-full items-center justify-between py-6 text-left">
@@ -308,7 +318,7 @@ export default function ProductPage() {
                       </a>
                     </h3>
                     <p className="mt-1 text-sm text-deep-black/60 font-cormorant italic">{rel.i18n?.[language]?.subDescription}</p>
-                    <p className="mt-1 text-sm font-medium text-brass font-jetbrains">¥{(rel.price || 0).toLocaleString()}</p>
+                    <p className="mt-1 text-sm font-medium text-brass font-jetbrains">{formatPrice(rel.price || 0, currency)}</p>
                   </div>
                 </div>
               ))}

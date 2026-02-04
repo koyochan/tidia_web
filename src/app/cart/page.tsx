@@ -7,7 +7,7 @@ import { CheckIcon, XMarkIcon as XMarkIconMini, InformationCircleIcon } from '@h
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { useCart } from '@/context/CartContext'
-import { fetchProducts } from '@/lib/firestore'
+import { fetchProducts, getCurrency, formatPrice } from '@/lib/firestore'
 import type { Product } from '@/types/product'
 import { useNotification } from '@/context/NotificationContext'
 import { useLanguage } from '@/context/LanguageContext'
@@ -16,15 +16,16 @@ export default function CartPage() {
   const { cart, removeItem, updateQuantity, subtotal } = useCart()
   const { showNotification } = useNotification()
   const { language, t } = useLanguage()
+  const currency = getCurrency(language)
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([])
-  
+
   useEffect(() => {
-    fetchProducts().then(allProducts => {
+    fetchProducts(currency).then(allProducts => {
       const cartIds = cart.map(item => item.id)
       const related = allProducts.filter(p => !cartIds.includes(p.id)).slice(0, 4)
       setRelatedProducts(related)
     })
-  }, [cart])
+  }, [cart, currency])
 
   const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -158,7 +159,7 @@ export default function CartPage() {
             <dl className="mt-6 space-y-4 font-jetbrains text-sm">
               <div className="flex items-center justify-between">
                 <dt className="text-deep-black/60 font-noto">{t('cart.subtotal')}</dt>
-                <dd className="font-medium text-deep-black">¥{subtotal.toLocaleString()}</dd>
+                <dd className="font-medium text-deep-black">{formatPrice(subtotal, currency)}</dd>
               </div>
               <div className="flex items-center justify-between border-t border-brass/10 pt-4">
                 <dt className="flex items-center text-deep-black/60 font-noto">
@@ -170,11 +171,11 @@ export default function CartPage() {
                 <dt className="flex text-deep-black/60 font-noto">
                   <span>{t('cart.tax')}</span>
                 </dt>
-                <dd className="font-medium text-deep-black">¥{tax.toLocaleString()}</dd>
+                <dd className="font-medium text-deep-black">{formatPrice(tax, currency)}</dd>
               </div>
               <div className="flex items-center justify-between border-t border-brass/20 pt-4">
                 <dt className="text-base font-medium text-deep-black font-playfair">{t('cart.total')} <span className="text-xs font-normal text-deep-black/60 font-noto">{t('cart.total_note')}</span></dt>
-                <dd className="text-base font-medium text-racing-green">¥{total.toLocaleString()}</dd>
+                <dd className="text-base font-medium text-racing-green">{formatPrice(total, currency)}</dd>
               </div>
             </dl>
 
@@ -229,7 +230,7 @@ export default function CartPage() {
                     </h3>
                     <p className="mt-1 text-sm text-deep-black/60 font-cormorant italic">{relatedProduct.i18n?.[language]?.subDescription}</p>
                   </div>
-                  <p className="text-sm font-medium text-brass font-jetbrains">¥{(relatedProduct.price || 0).toLocaleString()}</p>
+                  <p className="text-sm font-medium text-brass font-jetbrains">{formatPrice(relatedProduct.price || 0, currency)}</p>
                 </div>
               </div>
             ))}
